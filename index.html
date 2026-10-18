@@ -214,6 +214,87 @@ td .day{display:inline-grid;place-items:center;min-width:44px;height:28px;paddin
 .note{font-size:14px;color:var(--muted);margin:0;max-width:72ch}
 footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:20px}
 
+:root{--warn-bg:#FFF1D6;--warn-ink:#8A5A00;--crit-bg:#FDE2E0;--crit-ink:#B3261E}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--warn-bg:#3A2E12;--warn-ink:#F2C46B;--crit-bg:#3D1C1A;--crit-ink:#F49A92}}
+:root[data-theme="dark"]{--warn-bg:#3A2E12;--warn-ink:#F2C46B;--crit-bg:#3D1C1A;--crit-ink:#F49A92}
+.tag-warn{background:var(--warn-bg);color:var(--warn-ink)}
+[hidden]{display:none!important}
+.lesson{display:grid;gap:14px;min-width:0}
+.ltabs{display:flex;gap:4px;flex-wrap:wrap;background:var(--sky);padding:5px;border-radius:999px;justify-self:start}
+.ltab{border:0;background:transparent;font:500 14px var(--f-body);color:var(--fg);padding:8px 16px;border-radius:999px;cursor:pointer}
+.ltab[aria-selected="true"]{background:var(--card);box-shadow:var(--shadow);color:var(--blue)}
+.lpanel{display:grid;gap:14px;min-width:0}
+.lpanel h4{font:500 19px/1.2 var(--f-display);margin:10px 0 0}
+.lpanel p,.lpanel ul,.lpanel ol{margin:0;max-width:78ch}
+.lpanel ul,.lpanel ol{padding-left:20px;display:grid;gap:5px}
+.task{background:var(--card);border:1px solid var(--line);border-radius:var(--r-l);padding:18px;display:grid;gap:12px;min-width:0}
+.task h4{margin:0}
+.callout{background:var(--mint);border-radius:var(--r-m);padding:12px 16px;font-size:14px}
+.dl{font-weight:500}
+.tbl-s{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-m);background:var(--card)}
+.tbl-s table{font-size:13.5px}
+.tbl-s th,.tbl-s td{padding:8px 12px}
+.tbl-s td.n,.tbl-s th.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.tbl-s tr.grp td{background:var(--sky);font:500 11px var(--f-sys);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.tbl-s tr.tot td{font-weight:700}
+.tbl-s td.ind{padding-left:28px;color:var(--muted)}
+.tbl-s td.code{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.q{display:grid;grid-template-columns:minmax(0,1fr) auto auto 24px;gap:8px;align-items:center;font-size:14px}
+.q label{min-width:0}
+.q select:only-of-type{grid-column:2/4}
+.q input:only-of-type{grid-column:2/4;justify-self:end}
+.q input,.q select,.bal-in{font:inherit;font-size:14px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);min-width:0}
+.q input,.bal-in{width:120px;text-align:right;font-variant-numeric:tabular-nums}
+.chk.ok{border-color:var(--lime);background:var(--lime-soft)}
+.chk.bad{border-color:var(--crit-ink);background:var(--crit-bg)}
+.st{font-weight:700;text-align:center}
+.st.ok{color:var(--lime-ink)} .st.bad{color:var(--crit-ink)}
+.hint{grid-column:1/-1;font-size:13px;color:var(--fg);padding:7px 12px;border-radius:10px;background:var(--warn-bg)}
+.hrow td{padding:0 12px 8px!important;border-bottom:1px solid var(--line)}
+.hrow .hint{display:block}
+textarea{font:inherit;font-size:14px;width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--fg);resize:vertical}
+.check-btn,.check-anon{justify-self:start}
+details.answer{border-top:1px dashed var(--line);padding-top:10px;display:grid;gap:8px}
+details.answer>summary{display:inline-flex;padding:0;color:var(--blue);font-weight:500;grid-template-columns:none}
+details.answer>summary::before{content:"+ "}
+details.answer[open]>summary::before{content:"− "}
+pre{white-space:pre-wrap;font:13px/1.55 ui-monospace,Menlo,Consolas,monospace;background:var(--sky);padding:12px 14px;border-radius:12px;margin:0;color:var(--fg)}
+pre.formula{background:var(--mint)}
+.prompt{background:var(--card);border:1px solid var(--line);border-radius:var(--r-l);padding:16px;display:grid;gap:10px;min-width:0}
+.prompt .copy{justify-self:start}
+blockquote.raw{margin:0;padding:12px 16px;border-left:3px solid var(--blue);background:var(--sky);border-radius:0 12px 12px 0;font-size:14px}
+.checks-list{display:grid;gap:8px;font-size:14px}
+.checks-list label,.steps-list label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.checks-list input,.steps-list input{accent-color:var(--lime);margin-top:3px;flex:none}
+.steps-list{display:grid;gap:8px;font-size:14px}
+code{font:13px ui-monospace,Menlo,monospace;background:var(--sky);padding:1px 6px;border-radius:6px}
+.lvl{display:inline-block;font:500 11px/1.2 var(--f-sys);padding:4px 8px;border-radius:999px;margin-right:6px;white-space:nowrap}
+.lvl.h{background:var(--lime-soft);color:var(--lime-ink)} .lvl.m{background:var(--warn-bg);color:var(--warn-ink)}
+.lvl.c{background:var(--crit-bg);color:var(--crit-ink)} .lvl.n{background:var(--line);color:var(--muted)}
+.status-row{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;align-items:center;font-size:14px}
+.status-row .lvl{justify-self:start}
+.small{font-size:13px;color:var(--muted)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ok-box,.no-box{border-radius:var(--r-m);padding:12px 16px;font-size:14px}
+.ok-box{background:var(--lime-soft)} .no-box{background:var(--crit-bg)}
+.ok-box ul,.no-box ul{margin:6px 0 0}
+.mats-inline{font-size:14px;background:var(--mint);padding:10px 14px;border-radius:12px}
+.task-res,.anon-res{margin:0;font-weight:500;font-size:14px}
+.task-res.ok,.anon-res.ok{color:var(--lime-ink)} .task-res.bad,.anon-res.bad{color:var(--crit-ink)}
+.lesson-mark{font:500 11px/1 var(--f-sys);padding:4px 8px;border-radius:999px;background:var(--blue-soft);color:var(--blue)}
+.soon{font:500 11px/1 var(--f-sys);padding:4px 8px;border-radius:999px;background:var(--line);color:var(--muted)}
+.copy.done{border-color:var(--lime);color:var(--lime-ink)}
+@media (max-width:620px){
+  .q{grid-template-columns:1fr auto 24px}
+  .q label{grid-column:1/-1}
+  .q select:only-of-type,.q input:only-of-type{grid-column:1/3;justify-self:stretch}
+  .q input{width:100%}
+  .two-col{grid-template-columns:1fr}
+  .task{padding:14px}
+  .bal-in{width:92px}
+  #bal-input table{min-width:460px}
+}
+
 @media (max-width:980px){
   .hero{grid-template-columns:1fr}
   .hero-copy{order:-1}
@@ -400,7 +481,7 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);paddin
 </section>
 
 <section class="sec" id="modules">
-  <div class="sec-head"><div><h2>10 модулей</h2><p>Откройте модуль: в нём темы, практика и материалы. Метка <span class="ai-mark">ИИ</span> стоит у модулей, где ИИ входит в основную работу.</p></div></div>
+  <div class="sec-head"><div><h2>10 модулей</h2><p>Модули с меткой <span class="lesson-mark">урок</span> — полноценные уроки: практика с автопроверкой, теория и промпты для ИИ. Остальные пока содержат план и материалы. Метка <span class="ai-mark">ИИ</span> — модули, где ИИ входит в основную работу.</p></div></div>
   <div id="mlist"></div>
 </section>
 
@@ -486,7 +567,523 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);paddin
 <footer>Отметки о прохождении хранятся только в вашем браузере.</footer>
 </div>
 
+<!-- ============ МОДУЛЬ 1 ============ -->
+<template id="L1-practice">
+  <div class="callout"><b>Компания-образец.</b> ТОО «Образец-Трейд», оптовая торговля стройматериалами, Алматы. Суммы в тыс. ₸, все данные вымышлены. <a class="dl" href="data/obrazets-trade.xlsx" download>Скачать данные в Excel</a></div>
+
+  <div class="task">
+    <h4>Пакет документов за 2025 год</h4>
+    <div class="tbl-s"><table>
+      <tbody>
+        <tr class="grp"><td colspan="2">Отчётность</td></tr>
+        <tr><td>ОПиУ, стр. 010 — выручка</td><td class="n">574 300</td></tr>
+        <tr><td>Баланс, стр. 016 — ДЗ на начало / конец года</td><td class="n">81 500 / 118 900</td></tr>
+        <tr><td>Баланс, стр. 219 — авансы полученные на начало / конец</td><td class="n">5 100 / 6 900</td></tr>
+        <tr><td>Баланс, стр. 210 + 310 — займы на конец года</td><td class="n">78 000 + 15 000</td></tr>
+        <tr class="grp"><td colspan="2">Налоговые декларации</td></tr>
+        <tr><td>ФНО 100.00 — доход от реализации</td><td class="n">560 800</td></tr>
+        <tr><td>ФНО 300.00 — облагаемый оборот по НДС</td><td class="n">571 900</td></tr>
+        <tr class="grp"><td colspan="2">Банковские выписки, все счета</td></tr>
+        <tr><td>Поступления, всего</td><td class="n">695 200</td></tr>
+        <tr><td class="ind">оплата задолженности покупателей</td><td class="n">564 600</td></tr>
+        <tr><td class="ind">авансы от покупателей</td><td class="n">43 000</td></tr>
+        <tr><td class="ind">банковские займы</td><td class="n">85 000</td></tr>
+        <tr><td class="ind">прочие поступления</td><td class="n">2 600</td></tr>
+        <tr class="grp"><td colspan="2">Кредитный отчёт ПКБ на 31.12.2025</td></tr>
+        <tr><td>Банк А — кредитная линия, остаток</td><td class="n">78 000</td></tr>
+        <tr><td>Банк Б — займ, остаток</td><td class="n">15 000</td></tr>
+        <tr><td>Лизинговая компания — финансовый лизинг автотранспорта, остаток</td><td class="n">6 000</td></tr>
+        <tr><td>Просрочки</td><td class="n">нет</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="task" data-task="m1t1">
+    <h4>Задание 1. Карта источников</h4>
+    <p>Каким документом вы подтвердите каждую цифру отчётности?</p>
+    <div class="q"><label for="m1-s1">Выручка за год</label><select class="chk" id="m1-s1" data-ans="fno"><option value="">— выберите —</option><option value="fno">ФНО 100.00 и 300.00</option><option value="pkb">Кредитный отчёт ПКБ</option><option value="bank">Банковские выписки</option><option value="fot">ФНО 200.00</option><option value="bal">Баланс на начало и конец года</option></select><span class="st"></span></div>
+    <div class="q"><label for="m1-s2">Остаток банковских займов</label><select class="chk" id="m1-s2" data-ans="pkb"><option value="">— выберите —</option><option value="fno">ФНО 100.00 и 300.00</option><option value="pkb">Кредитный отчёт ПКБ</option><option value="bank">Банковские выписки</option><option value="fot">ФНО 200.00</option><option value="bal">Баланс на начало и конец года</option></select><span class="st"></span></div>
+    <div class="q"><label for="m1-s3">Реальные поступления денег</label><select class="chk" id="m1-s3" data-ans="bank"><option value="">— выберите —</option><option value="fno">ФНО 100.00 и 300.00</option><option value="pkb">Кредитный отчёт ПКБ</option><option value="bank">Банковские выписки</option><option value="fot">ФНО 200.00</option><option value="bal">Баланс на начало и конец года</option></select><span class="st"></span></div>
+    <div class="q"><label for="m1-s4">Фонд оплаты труда</label><select class="chk" id="m1-s4" data-ans="fot"><option value="">— выберите —</option><option value="fno">ФНО 100.00 и 300.00</option><option value="pkb">Кредитный отчёт ПКБ</option><option value="bank">Банковские выписки</option><option value="fot">ФНО 200.00</option><option value="bal">Баланс на начало и конец года</option></select><span class="st"></span></div>
+    <div class="q"><label for="m1-s5">Чистая прибыль года</label><select class="chk" id="m1-s5" data-ans="bal" data-hint="Прибыль должна объяснять прирост нераспределённой прибыли (стр. 414) между двумя балансами"><option value="">— выберите —</option><option value="fno">ФНО 100.00 и 300.00</option><option value="pkb">Кредитный отчёт ПКБ</option><option value="bank">Банковские выписки</option><option value="fot">ФНО 200.00</option><option value="bal">Баланс на начало и конец года</option></select><span class="st"></span></div>
+    <button class="btn btn-primary check-btn" type="button">Проверить</button>
+  </div>
+
+  <div class="task" data-task="m1t2">
+    <h4>Задание 2. Четыре сверки</h4>
+    <p>Посчитайте и поставьте статус по правилу курса: до 1% — норма, 1–5% — требует проверки, больше 5% — критический риск.</p>
+    <div class="q"><label for="m1-n1">Расхождение выручки ОПиУ и ФНО 100.00, % от выручки</label><input class="chk" id="m1-n1" inputmode="decimal" data-ans="2.35" data-tol="0.06" data-hint="(574 300 − 560 800) / 574 300 × 100"><select class="chk" id="m1-z1" data-ans="check"><option value="">статус</option><option value="ok">норма</option><option value="check">требует проверки</option><option value="crit">критический риск</option></select><span class="st"></span></div>
+    <div class="q"><label for="m1-n2">Выручка с НДС 12%, тыс. ₸</label><input class="chk" id="m1-n2" inputmode="decimal" data-ans="643216" data-tol="20" data-hint="574 300 × 1,12"><span class="st"></span></div>
+    <div class="q"><label for="m1-n3">Ожидаемые поступления от покупателей, тыс. ₸</label><input class="chk" id="m1-n3" inputmode="decimal" data-ans="607616" data-tol="60" data-hint="Выручка с НДС − прирост ДЗ (37 400) + прирост авансов полученных (1 800)"><select class="chk" id="m1-z3" data-ans="ok" data-hint="Фактически от покупателей пришло 564 600 + 43 000 = 607 600"><option value="">статус</option><option value="ok">норма</option><option value="check">требует проверки</option><option value="crit">критический риск</option></select><span class="st"></span></div>
+    <div class="q"><label for="m1-n4">Займы по ПКБ минус займы по балансу, тыс. ₸</label><input class="chk" id="m1-n4" inputmode="decimal" data-ans="6000" data-tol="1" data-hint="(78 000 + 15 000 + 6 000) − (78 000 + 15 000)"><select class="chk" id="m1-z4" data-ans="crit" data-hint="6 000 из 93 000 — это 6,5%, больше 5%"><option value="">статус</option><option value="ok">норма</option><option value="check">требует проверки</option><option value="crit">критический риск</option></select><span class="st"></span></div>
+    <button class="btn btn-primary check-btn" type="button">Проверить</button>
+    <details class="answer"><summary>Разбор ответов</summary>
+      <ol>
+        <li><b>Выручка выше декларации на 13 500 (2,35%).</b> Требует проверки: запросите регистр доходов и пояснение. Обратная ситуация, когда в декларации больше, обычно безопаснее. Если в отчёте для банка выручка больше, чем показано налоговой, это первый признак «нарисованной» отчётности.</li>
+        <li><b>Выручка с НДС — 643 216.</b> Покупатели платят сумму с НДС, поэтому выписки сравнивают именно с ней.</li>
+        <li><b>Ожидаемые поступления 607 616, фактические 607 600.</b> Расхождение 0,003% — норма. Займы (85 000) и прочие поступления к выручке не относятся. Сравнивать выручку со всеми поступлениями (695 200) — частая ошибка.</li>
+        <li><b>Лизинг 6 000 есть в ПКБ, но нет в балансе.</b> Критический риск: долговая нагрузка занижена. Запросите договор лизинга. По МСФО 16 такой лизинг отражают как актив в форме права пользования (стр. 122) и задолженность по аренде (стр. 218 и 318).</li>
+      </ol>
+    </details>
+  </div>
+
+  <div class="task">
+    <h4>Задание 3. Базовая точка</h4>
+    <p>Опишите свой процесс анализа одного клиента по шагам и запишите, сколько он занимает. В день 12 вы сравните с этим временем.</p>
+    <div class="q"><label for="m1-time">Время полного анализа сейчас, часов</label><input id="m1-time" class="save" inputmode="decimal" placeholder="например, 16"></div>
+    <textarea id="m1-steps" class="save" rows="5" placeholder="1. Получаю документы от клиента…&#10;2. Ввожу баланс в Excel…"></textarea>
+  </div>
+</template>
+
+<template id="L1-theory">
+  <h4>Кто читает анализ и что ему нужно</h4>
+  <div class="tbl-s"><table>
+    <thead><tr><th>Читатель</th><th>Главный вопрос</th><th>На что смотрит</th></tr></thead>
+    <tbody>
+      <tr><td>Банк, кредитный аналитик</td><td>Вернут ли деньги вовремя</td><td>ДДС, DSCR, долг/EBITDA, кредитная история, залог</td></tr>
+      <tr><td>Лизинговая компания</td><td>Хватит ли потока на платежи</td><td>Поступления по выпискам, долговая нагрузка</td></tr>
+      <tr><td>Собственник</td><td>Где теряются деньги и куда расти</td><td>Маржа, оборачиваемость, кассовые разрывы</td></tr>
+      <tr><td>Инвестор, покупатель бизнеса</td><td>Сколько стоит и какие риски</td><td>Нормализованная EBITDA, качество отчётности</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4>Пять источников данных</h4>
+  <div class="tbl-s"><table>
+    <thead><tr><th>Документ</th><th>Что даёт</th><th>Доверие</th></tr></thead>
+    <tbody>
+      <tr><td>Финансовая отчётность: полная форма по приказу №404 или упрощённая форма МСБ</td><td>Баланс, ОПиУ, ДДС, изменения капитала</td><td><span class="lvl m">среднее</span> составляет сама компания</td></tr>
+      <tr><td>Налоговые декларации: ФНО 100.00 (КПН), 300.00 (НДС), 200.00 (ИПН и соцплатежи), 910.00 (упрощёнка)</td><td>Доход, облагаемые обороты, ФОТ</td><td><span class="lvl h">выше</span> за искажение есть санкции</td></tr>
+      <tr><td>Банковские выписки</td><td>Реальные поступления и списания</td><td><span class="lvl h">высокое</span> формирует банк</td></tr>
+      <tr><td>Кредитный отчёт ПКБ</td><td>Все займы, лизинг, гарантии, просрочки</td><td><span class="lvl h">высокое</span> данные кредиторов</td></tr>
+      <tr><td>ОСВ и расшифровки счетов</td><td>Детализация любой строки</td><td><span class="lvl m">среднее</span> из учёта компании</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">С 2026 года в РК действует новый Налоговый кодекс. Номера форм и строк деклараций сверяйте с актуальной редакцией на adilet.zan.kz.</p>
+
+  <h4>Полная форма и форма МСБ</h4>
+  <p>Организации публичного интереса публикуют отчётность по формам приказа №404, у строк трёхзначные коды: 010, 016, 100. Малый и средний бизнес часто сдаёт упрощённые формы, где строк меньше и нумерация своя. Чтобы сравнивать компании и годы между собой, приведите всё к одной структуре. В курсе это коды формы №404.</p>
+  <div class="tbl-s"><table>
+    <thead><tr><th>Строка упрощённой формы</th><th>Код единой структуры (№404)</th></tr></thead>
+    <tbody>
+      <tr><td>Денежные средства</td><td>010</td></tr>
+      <tr><td>Дебиторская задолженность</td><td>016 — до 12 месяцев, 117 — дольше</td></tr>
+      <tr><td>Запасы</td><td>020</td></tr>
+      <tr><td>Прочие краткосрочные активы, НДС к возмещению, авансы выданные</td><td>022</td></tr>
+      <tr><td>Основные средства</td><td>121</td></tr>
+      <tr><td>Займы</td><td>210 — до 12 месяцев, 310 — дольше</td></tr>
+      <tr><td>Кредиторская задолженность</td><td>214</td></tr>
+      <tr><td>Авансы полученные</td><td>219</td></tr>
+      <tr><td>Нераспределённая прибыль</td><td>414</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4>Что с чем должно сходиться</h4>
+  <ol>
+    <li>Актив равен пассиву, итоговые строки равны сумме своих строк.</li>
+    <li>Нераспределённая прибыль на конец года = на начало + чистая прибыль − дивиденды.</li>
+    <li>Выручка в ОПиУ ≈ доход от реализации в ФНО 100.00 ≈ облагаемый оборот в ФНО 300.00.</li>
+    <li>Поступления от покупателей по выпискам ≈ выручка с НДС − прирост ДЗ + прирост авансов полученных.</li>
+    <li>Займы в балансе (210 + 310, плюс аренда 218 и 318) = остатки в кредитном отчёте ПКБ.</li>
+    <li>ФОТ в расходах ≈ ФОТ в ФНО 200.00.</li>
+  </ol>
+  <pre class="formula">Ожидаемые поступления = Выручка × (1 + ставка НДС) − ΔДЗ + ΔАвансы полученные</pre>
+
+  <h4>Статусы вместо нулей</h4>
+  <div class="status-row">
+    <span class="lvl h">норма</span><span>расхождение до 1%</span>
+    <span class="lvl m">требует проверки</span><span>1–5%, нужно пояснение клиента</span>
+    <span class="lvl c">критический риск</span><span>больше 5% или расхождение в пользу компании без объяснения</span>
+    <span class="lvl n">недостаточно данных</span><span>документа нет; ноль вместо пропуска искажает все расчёты</span>
+  </div>
+  <p class="small">Пороги — рабочее правило курса. В банке или у вашего клиента они могут быть другими.</p>
+
+  <h4>Красные флаги на входе</h4>
+  <ul>
+    <li>Выручка в отчётности выше, чем в декларациях.</li>
+    <li>В ПКБ есть займы или лизинг, которых нет в балансе.</li>
+    <li>Поступления от покупателей заметно меньше выручки с НДС.</li>
+    <li>Займы учредителям и связанным сторонам.</li>
+    <li>Отчётность для банка отличается от той, что сдана в КГД.</li>
+  </ul>
+  <div class="mats-inline"><b>Материалы:</b> приказ Минфина РК №404, НСФО для МСБ, формы ФНО на adilet.zan.kz, структура кредитного отчёта на 1cb.kz.</div>
+</template>
+
+<template id="L1-prompts">
+  <div class="prompt"><b>Чек-лист сверок под клиента</b><pre>Ты — кредитный аналитик банка в Казахстане. У меня есть пакет документов компании: финансовая отчётность (баланс, ОПиУ), декларации ФНО 100.00, 300.00, 200.00, банковские выписки и кредитный отчёт ПКБ.
+Составь чек-лист сверок между этими документами: что с чем сравнивать, по какой формуле и что означает расхождение.
+Формат: таблица «Сверка | Формула | Что значит расхождение | Что запросить у клиента».
+Не придумывай номера строк деклараций: где не уверен, пиши «уточнить по актуальной форме».</pre><button class="btn btn-line copy" type="button">Скопировать</button></div>
+  <div class="prompt"><b>Объяснить расхождение</b><pre>Выручка в ОПиУ компании — 574 300 тыс., в декларации по КПН — 560 800 тыс. Компания — оптовая торговля, плательщик НДС.
+Перечисли 5 возможных причин расхождения от самой безобидной до самой тревожной. Для каждой напиши, каким документом её подтвердить или опровергнуть.</pre><button class="btn btn-line copy" type="button">Скопировать</button></div>
+  <div class="prompt"><b>Запрос клиенту</b><pre>Напиши вежливое письмо клиенту с запросом недостающих документов для финансового анализа: расшифровка выручки по месяцам, договор лизинга автотранспорта, пояснение расхождения выручки с декларацией по КПН. Тон деловой, без канцелярита, до 120 слов.</pre><button class="btn btn-line copy" type="button">Скопировать</button></div>
+</template>
+
+<!-- ============ МОДУЛЬ 2 ============ -->
+<template id="L2-practice">
+  <div class="task" data-task="m2t1">
+    <h4>Задание 1. Перепишите промпт</h4>
+    <p>Плохой промпт: <i>«Проанализируй баланс»</i>. Перепишите его для обезличенного баланса компании-образца, используя пять частей: роль, цель, контекст, формат, критерии проверки.</p>
+    <textarea id="m2-prompt" class="save" rows="6" placeholder="Ты — …"></textarea>
+    <div class="checks-list">
+      <label><input type="checkbox" class="save" id="m2-c1"> Указана роль (кто отвечает)</label>
+      <label><input type="checkbox" class="save" id="m2-c2"> Указана цель (какое решение примут по ответу)</label>
+      <label><input type="checkbox" class="save" id="m2-c3"> Дан контекст (отрасль, период, единицы, что известно)</label>
+      <label><input type="checkbox" class="save" id="m2-c4"> Задан формат (таблица, объём, разделы)</label>
+      <label><input type="checkbox" class="save" id="m2-c5"> Есть критерии проверки (что считать ошибкой, не выдумывать)</label>
+    </div>
+    <details class="answer"><summary>Пример хорошего промпта</summary>
+      <pre>Ты — кредитный аналитик банка в Казахстане.
+Цель: решить, можно ли рассматривать компанию для кредитной линии на 12 месяцев.
+Контекст: оптовая торговля стройматериалами, баланс по форме №404 за 2024–2025 годы, суммы в условных единицах (обезличены). Данные ниже.
+Формат: 1) таблица изменений по строкам, %; 2) пять главных наблюдений, по одному предложению; 3) три вопроса клиенту.
+Критерии: проценты считай только по данным ниже, каждый вывод привязывай к строке баланса, если данных не хватает — так и пиши.</pre>
+    </details>
+  </div>
+
+  <div class="task" data-task="m2t2">
+    <h4>Задание 2. Обезличьте текст</h4>
+    <p>Перепишите фрагмент так, чтобы его можно было отправить в облачный ИИ. Пропорции между суммами сохраните.</p>
+    <blockquote class="raw">ТОО «Образец-Трейд» (БИН 123456789012), директор Сергеев Аскар Петрович. Выручка за 2025 год — 574 300 тыс. тенге, займ в АО «Банк Альфа» по договору № КЛ-2025/118 — 78 000 тыс. тенге. Крупнейший поставщик — ТОО «СтройБаза Плюс», долг перед ним 41 250 тыс. тенге. Расчётный счёт KZ12345678901234567890.</blockquote>
+    <textarea id="m2-anon" class="save anon" rows="5" placeholder="Компания А…" data-forbid="123456789012|Сергеев|Аскар|Образец|Альфа|КЛ-2025|СтройБаза|KZ1234|574 ?300|78 ?000|41 ?250"></textarea>
+    <button class="btn btn-primary check-anon" type="button">Проверить на утечки</button>
+    <p class="anon-res" aria-live="polite"></p>
+    <details class="answer"><summary>Эталон</summary>
+      <p>Коэффициент масштабирования 0,37, ключ хранится только у вас.</p>
+      <pre>Компания А, руководитель Р1. Выручка за год — 212 491 у.е., займ в Банке 1 по договору Д1 — 28 860 у.е. Крупнейший поставщик — Поставщик 1, долг перед ним 15 263 у.е.</pre>
+      <p>Номер счёта удалён совсем: для анализа он не нужен. Доли сохранились: займ — 13,6% выручки, долг поставщику — 7,2%, как и в исходнике.</p>
+    </details>
+  </div>
+
+  <div class="task">
+    <h4>Задание 3. Локальная модель</h4>
+    <ol class="steps-list">
+      <li><label><input type="checkbox" class="save" id="m2-l1"> Скачал(а) и установил(а) Ollama с ollama.com</label></li>
+      <li><label><input type="checkbox" class="save" id="m2-l2"> Скачал(а) модель: в терминале <code>ollama pull qwen2.5:7b</code> (или более новую модель на 7–8 млрд параметров)</label></li>
+      <li><label><input type="checkbox" class="save" id="m2-l3"> Запустил(а): <code>ollama run qwen2.5:7b</code></label></li>
+      <li><label><input type="checkbox" class="save" id="m2-l4"> Отключил(а) интернет и получил(а) ответ на тестовый промпт ниже</label></li>
+    </ol>
+    <div class="prompt"><b>Тестовый промпт для локальной модели</b><pre>Выручка компании: 2024 год — 486 500, 2025 год — 574 300. Дебиторская задолженность: 81 500 и 118 900. Объясни простыми словами, что изменилось и почему это может быть риском. Не считай проценты, только опиши.</pre><button class="btn btn-line copy" type="button">Скопировать</button></div>
+    <p class="small">Модели на 7–8 млрд параметров работают на ноутбуке с 16 ГБ памяти. Считают они хуже облачных: используйте их для текста по реальным цифрам, а расчёты делайте в Excel.</p>
+  </div>
+
+  <div class="task">
+    <h4>Задание 4. Найдите три ошибки ИИ</h4>
+    <p>ИИ ответил по балансу компании-образца за 2025 год:</p>
+    <blockquote class="raw">«Текущая ликвидность ТОО на конец 2025 года — 1,56, это хороший уровень. Дебиторская задолженность выросла на 37,4%, почти как выручка. Основные средства отражаются в строке 122 баланса».</blockquote>
+    <textarea id="m2-errs" class="save" rows="3" placeholder="1. … 2. … 3. …"></textarea>
+    <details class="answer"><summary>Ответ</summary>
+      <ol>
+        <li>1,56 — ликвидность на конец 2024 года. На конец 2025: 276 700 / 203 800 = <b>1,36</b>. ИИ взял не тот столбец.</li>
+        <li>37 400 — абсолютный прирост ДЗ в тыс. ₸, а не процент. В процентах — <b>+45,9%</b>, при росте выручки на 18%: ДЗ растёт в 2,5 раза быстрее.</li>
+        <li>По форме №404 основные средства — <b>строка 121</b>. Строка 122 — актив в форме права пользования.</li>
+      </ol>
+      <p>Типичные ошибки: путаница периодов, абсолютных и относительных изменений, уверенно названный неверный код. Поэтому цифры пересчитывают в Excel, а коды сверяют с приказом.</p>
+    </details>
+  </div>
+
+  <div class="task">
+    <h4>Задание 5. Досье на контрагента</h4>
+    <p>Выберите любую компанию из списка эмитентов KASE и соберите досье на одну страницу. Каждый факт — со ссылкой.</p>
+    <div class="checks-list">
+      <label><input type="checkbox" class="save" id="m2-d1"> Регистрационные данные, дата создания, руководитель</label>
+      <label><input type="checkbox" class="save" id="m2-d2"> Налоговый статус: нет в списках бездействующих и неблагонадёжных (сервисы КГД)</label>
+      <label><input type="checkbox" class="save" id="m2-d3"> Госзакупки и реестр недобросовестных поставщиков (goszakup.gov.kz)</label>
+      <label><input type="checkbox" class="save" id="m2-d4"> Судебные дела (office.sud.kz)</label>
+      <label><input type="checkbox" class="save" id="m2-d5"> Последняя отчётность (dfo.kz или kase.kz)</label>
+      <label><input type="checkbox" class="save" id="m2-d6"> Непроверенные факты помечены отдельно</label>
+    </div>
+  </div>
+</template>
+
+<template id="L2-theory">
+  <h4>Как работает языковая модель</h4>
+  <p>Модель продолжает текст: подбирает самое вероятное продолжение. Она не считает, как Excel, и не сверяется с законом, если вы не дали ей текст закона. Отсюда главное правило: <b>ИИ предлагает, Excel считает, вы проверяете.</b></p>
+  <div class="tbl-s"><table>
+    <thead><tr><th>Задача</th><th>Как ИИ справляется</th><th>Как использовать</th></tr></thead>
+    <tbody>
+      <tr><td>Структура анализа, план заключения</td><td><span class="lvl h">хорошо</span></td><td>Просите варианты и выбирайте</td></tr>
+      <tr><td>Формулы Excel, макросы, Python</td><td><span class="lvl h">хорошо</span></td><td>Проверяйте на тестовом примере</td></tr>
+      <tr><td>Поиск противоречий в тексте и выводах</td><td><span class="lvl h">хорошо</span></td><td>«Оспорь мой вывод»</td></tr>
+      <tr><td>Арифметика на длинных рядах</td><td><span class="lvl m">ошибается</span></td><td>Считайте в Excel</td></tr>
+      <tr><td>Коды строк, нормы РК, свежие изменения законов</td><td><span class="lvl c">выдумывает</span></td><td>Только по первоисточнику</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4>Пять частей промпта</h4>
+  <div class="tbl-s"><table>
+    <tbody>
+      <tr><td><b>Роль</b></td><td>Кто отвечает: «кредитный аналитик банка в Казахстане»</td></tr>
+      <tr><td><b>Цель</b></td><td>Какое решение примут по ответу: «решить, выдавать ли кредитную линию»</td></tr>
+      <tr><td><b>Контекст</b></td><td>Отрасль, период, единицы, форма отчётности, сами данные</td></tr>
+      <tr><td><b>Формат</b></td><td>Таблица, список, объём, разделы</td></tr>
+      <tr><td><b>Критерии</b></td><td>Что считать ошибкой: «не выдумывай коды строк», «каждый вывод привяжи к цифре»</td></tr>
+    </tbody>
+  </table></div>
+  <p>Если ответ не тот, не начинайте заново, а уточняйте: «вывод 3 не следует из цифр, пересмотри». Перед сложной задачей попросите: «Задай мне до пяти вопросов, прежде чем отвечать». После ответа — «Найди ошибки в своём ответе».</p>
+
+  <h4>Что можно отдавать в облачный ИИ</h4>
+  <div class="two-col">
+    <div class="ok-box"><b>Можно</b><ul><li>Структуры отчётов, формулы, методику</li><li>Шаблоны писем и заключений</li><li>Обезличенные цифры</li><li>Публичную отчётность</li></ul></div>
+    <div class="no-box"><b>Нельзя</b><ul><li>БИН, ИИН, названия, ФИО</li><li>Номера счетов и договоров</li><li>Реальные суммы клиента</li><li>Контрагентов, выписки целиком</li></ul></div>
+  </div>
+
+  <h4>Четыре приёма обезличивания</h4>
+  <ol>
+    <li><b>Коды вместо имён:</b> «Компания А», «Поставщик 1», «Банк 1».</li>
+    <li><b>Масштабирование:</b> все суммы умножьте на один коэффициент, например 0,37. Доли, темпы роста и коэффициенты не меняются.</li>
+    <li><b>Удаление реквизитов:</b> счета, номера договоров, адреса для анализа не нужны.</li>
+    <li><b>Ключ у себя:</b> таблица соответствий «код ↔ реальное имя» хранится только на вашем компьютере.</li>
+  </ol>
+  <p class="small">При масштабировании меняются абсолютные пороги: лимит банка или минимальная сумма займа. Их пересчитайте тем же коэффициентом или уберите.</p>
+
+  <h4>Локальная модель</h4>
+  <p>Ollama или LM Studio запускают модель прямо на вашем компьютере, без интернета. Данные никуда не уходят, поэтому с реальными цифрами клиента работайте только так. Локальные модели слабее облачных: им подходят пересказ, классификация и черновики текста. Сложную методику обсуждайте в облаке на обезличенных данных.</p>
+
+  <h4>Как проверять ответы</h4>
+  <ul>
+    <li>Каждую цифру пересчитайте в Excel.</li>
+    <li>Коды строк и нормы сверяйте с первоисточником: приказ №404, Налоговый кодекс на adilet.zan.kz.</li>
+    <li>Просите ссылку и открывайте её: ИИ может сослаться на несуществующую страницу.</li>
+    <li>Задайте тот же вопрос другими словами и сравните ответы.</li>
+  </ul>
+
+  <h4>Публичная информация о контрагенте</h4>
+  <div class="tbl-s"><table>
+    <thead><tr><th>Что проверить</th><th>Где</th></tr></thead>
+    <tbody>
+      <tr><td>Регистрация, руководитель, учредители</td><td>eGov: справка о зарегистрированном юрлице</td></tr>
+      <tr><td>Налоговые риски: бездействующие, неблагонадёжные, лжепредприятия</td><td>Сервисы КГД МФ РК</td></tr>
+      <tr><td>Госзакупки, недобросовестные поставщики</td><td>goszakup.gov.kz</td></tr>
+      <tr><td>Судебные дела</td><td>office.sud.kz</td></tr>
+      <tr><td>Опубликованная отчётность</td><td>dfo.kz, kase.kz</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">Адреса и названия сервисов меняются: если ссылка не открывается, найдите актуальную на сайте ведомства.</p>
+  <div class="mats-inline"><b>Материалы:</b> руководство по промптам Claude (docs.claude.com), Ollama, LM Studio.</div>
+</template>
+
+<template id="L2-prompts">
+  <div class="prompt"><b>Шаблон из пяти частей</b><pre>Ты — [роль].
+Цель: [какое решение примут по ответу].
+Контекст: [отрасль, период, единицы, форма отчётности]. Данные: [вставьте обезличенные данные].
+Формат: [таблица / список / объём].
+Критерии: считай только по данным выше; каждый вывод привязывай к цифре; если данных не хватает — так и пиши; не выдумывай коды строк и нормы.</pre><button class="btn btn-line copy" type="button">Скопировать</button></div>
+  <div class="prompt"><b>Сначала вопросы</b><pre>Прежде чем отвечать, задай мне до пяти уточняющих вопросов, без которых ответ будет неточным. Жди моих ответов.</pre><button class="btn btn-line copy" type="button">Скопировать</button></div>
+  <div class="prompt"><b>Самопроверка</b><pre>Проверь свой предыдущий ответ как строгий рецензент: найди арифметические ошибки, путаницу периодов, выводы, которые не следуют из цифр, и всё, что ты мог выдумать. Выведи список исправлений.</pre><button class="btn btn-line copy" type="button">Скопировать</button></div>
+  <div class="prompt"><b>Обезличивание локальной моделью</b><pre>Замени в тексте ниже все названия компаний и банков на коды (Компания А, Банк 1, Поставщик 1), ФИО — на Р1, Р2. Удали БИН, ИИН, номера счетов и договоров. Все суммы умножь на 0,37 и округли до целых. Выведи только результат, затем отдельно таблицу соответствий.
+Текст: [вставьте]</pre><button class="btn btn-line copy" type="button">Скопировать</button></div>
+</template>
+
+<!-- ============ МОДУЛЬ 3 ============ -->
+<template id="L3-practice">
+  <div class="callout"><b>Данные:</b> ОСВ ТОО «Образец-Трейд» за 2025 год и баланс на конец 2024 года. Суммы в тыс. ₸. <a class="dl" href="data/obrazets-trade.xlsx" download>Скачать данные в Excel</a> — там есть шаблон баланса с автоитогами.</div>
+
+  <div class="task">
+    <h4>ОСВ за 2025 год</h4>
+    <div class="tbl-s scroll" id="osv-table"></div>
+  </div>
+
+  <div class="task" data-task="m3t1">
+    <h4>Задание 1. Соберите баланс на 31.12.2025</h4>
+    <p>Заполните столбец 2025 по ОСВ, включая итоговые строки. Подсказка по строке появится, если ответ неверный.</p>
+    <div class="tbl-s scroll" id="bal-input"></div>
+    <button class="btn btn-primary check-btn" type="button">Проверить баланс</button>
+    <p class="task-res" aria-live="polite"></p>
+  </div>
+
+  <div class="task" data-task="m3t2">
+    <h4>Задание 2. Горизонтальный и вертикальный анализ</h4>
+    <p>Выручка: 2024 — 486 500, 2025 — 574 300. Остальное — из баланса. Проценты округляйте до десятых.</p>
+    <div class="q"><label for="m3-a1">Рост выручки 2025, %</label><input class="chk" id="m3-a1" inputmode="decimal" data-ans="18.0" data-tol="0.15" data-hint="574 300 / 486 500 − 1"><span class="st"></span></div>
+    <div class="q"><label for="m3-a2">Рост ДЗ (стр. 016), %</label><input class="chk" id="m3-a2" inputmode="decimal" data-ans="45.9" data-tol="0.15" data-hint="118 900 / 81 500 − 1"><span class="st"></span></div>
+    <div class="q"><label for="m3-a3">ДЗ в днях выручки, 2025</label><input class="chk" id="m3-a3" inputmode="decimal" data-ans="76" data-tol="1" data-hint="118 900 / 574 300 × 365"><span class="st"></span></div>
+    <div class="q"><label for="m3-a4">Изменение денежных средств, %</label><input class="chk" id="m3-a4" inputmode="decimal" data-ans="-55.7" data-tol="0.2" data-hint="9 800 / 22 100 − 1, со знаком минус"><span class="st"></span></div>
+    <div class="q"><label for="m3-a5">Текущая ликвидность 2025 (стр. 100 / стр. 300)</label><input class="chk" id="m3-a5" inputmode="decimal" data-ans="1.36" data-tol="0.015" data-hint="276 700 / 203 800"><span class="st"></span></div>
+    <div class="q"><label for="m3-a6">Доля капитала в валюте баланса 2025, %</label><input class="chk" id="m3-a6" inputmode="decimal" data-ans="36.6" data-tol="0.15" data-hint="126 200 / 345 000"><span class="st"></span></div>
+    <button class="btn btn-primary check-btn" type="button">Проверить</button>
+  </div>
+
+  <div class="task">
+    <h4>Задание 3. Пять наблюдений для банка</h4>
+    <p>По одному предложению: что изменилось, на сколько и почему это важно.</p>
+    <textarea id="m3-obs" class="save" rows="6" placeholder="1. …"></textarea>
+    <details class="answer"><summary>Эталон</summary>
+      <ol>
+        <li>ДЗ выросла на 45,9% при росте выручки на 18%: срок оплаты увеличился с 61 до 76 дней, покупатели платят медленнее.</li>
+        <li>Денежные средства упали на 55,7%, до 9,8 млн ₸, а краткосрочные займы выросли на 73,3%: рост оборота финансируется долгом.</li>
+        <li>Появился займ учредителю на 15 млн ₸ (стр. 117) в год нехватки денег: запросить договор, график возврата и цель.</li>
+        <li>Текущая ликвидность снизилась с 1,56 до 1,36, доля капитала — с 39,6% до 36,6%: запас прочности уменьшается.</li>
+        <li>Запасы выросли на 25,7%, быстрее выручки: проверить оборачиваемость и неликвид. Положительное: прибыль растёт, долгосрочный займ гасится по графику.</li>
+      </ol>
+    </details>
+  </div>
+
+  <div class="task">
+    <h4>Задание 4, дополнительно</h4>
+    <p>Скачайте с dfo.kz балансы двух компаний из разных отраслей за 3 года и сделайте для них задания 2 и 3. Сравните, чем отличается структура актива у торговли, услуг и производства.</p>
+  </div>
+</template>
+
+<template id="L3-theory">
+  <h4>Что показывает баланс</h4>
+  <p>Баланс — снимок компании на дату. <b>Активы</b> — чем она владеет, <b>обязательства</b> — кому должна, <b>капитал</b> — что принадлежит собственникам.</p>
+  <pre class="formula">Активы = Обязательства + Капитал</pre>
+
+  <h4>Структура формы №404</h4>
+  <div class="tbl-s"><table>
+    <thead><tr><th>Раздел</th><th>Главные строки</th><th>Итог</th></tr></thead>
+    <tbody>
+      <tr><td>I. Краткосрочные активы</td><td>010 деньги · 016 торговая ДЗ · 020 запасы · 022 прочие</td><td>100</td></tr>
+      <tr><td>II. Долгосрочные активы</td><td>117 долгосрочная ДЗ · 121 основные средства · 122 право пользования · 125 НМА</td><td>200</td></tr>
+      <tr><td>III. Краткосрочные обязательства</td><td>210 займы · 214 торговая КЗ · 216 подоходный налог · 217 работникам · 219 авансы полученные · 222 прочие</td><td>300</td></tr>
+      <tr><td>IV. Долгосрочные обязательства</td><td>310 займы · 316 отложенный налог · 318 аренда</td><td>400</td></tr>
+      <tr><td>V. Капитал</td><td>410 уставный капитал · 414 нераспределённая прибыль</td><td>500</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">Баланс = стр. 100 + 101 + 200 = стр. 300 + 301 + 400 + 500.</p>
+
+  <h4>Из ОСВ в баланс: шесть правил</h4>
+  <ol>
+    <li><b>Берите конечное сальдо</b>, а не обороты.</li>
+    <li><b>Контрсчета вычитайте:</b> основные средства 2410 минус амортизация 2420 дают остаточную стоимость в стр. 121.</li>
+    <li><b>Не сворачивайте:</b> ДЗ и КЗ, авансы выданные и полученные идут в разные строки, даже если контрагент один.</li>
+    <li><b>Делите по сроку:</b> до 12 месяцев — краткосрочные, дольше — долгосрочные. Часть долгосрочного займа к погашению в ближайший год переносится в 210.</li>
+    <li><b>Доходы и расходы в баланс не идут:</b> счета 6000–7000 закрываются, их итог уже в нераспределённой прибыли 5610.</li>
+    <li><b>Проверяйте:</b> актив = пассив; 414 на конец = 414 на начало + прибыль − дивиденды.</li>
+  </ol>
+  <div class="tbl-s"><table>
+    <thead><tr><th>Счета (Типовой план счетов)</th><th>Строка</th></tr></thead>
+    <tbody>
+      <tr><td>1010 касса, 1030 текущие счета</td><td>010</td></tr>
+      <tr><td>1210 ДЗ покупателей</td><td>016</td></tr>
+      <tr><td>1310–1330 запасы</td><td>020</td></tr>
+      <tr><td>1420 НДС к возмещению, 1710 авансы выданные</td><td>022</td></tr>
+      <tr><td>2410 − 2420 основные средства</td><td>121</td></tr>
+      <tr><td>3010 краткосрочные займы</td><td>210</td></tr>
+      <tr><td>3310 поставщики</td><td>214</td></tr>
+      <tr><td>3510 авансы полученные</td><td>219</td></tr>
+      <tr><td>4010 долгосрочные займы</td><td>310</td></tr>
+      <tr><td>5610 + 5620 нераспределённая прибыль</td><td>414</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">Субсчета у компании могут отличаться: смотрите на суть счёта, а не только на номер.</p>
+
+  <h4>Горизонтальный и вертикальный анализ</h4>
+  <pre class="formula">Изменение, % = (Конец / Начало − 1) × 100
+Доля, % = Строка / Валюта баланса × 100
+ДЗ в днях = ДЗ / Выручка × 365
+Текущая ликвидность = стр. 100 / стр. 300</pre>
+  <p>Сам по себе рост ничего не значит. Сравнивайте темпы: если ДЗ и запасы растут быстрее выручки, деньги «замораживаются» в обороте.</p>
+
+  <h4>Что смотреть в первую очередь</h4>
+  <ul>
+    <li><b>ДЗ растёт быстрее выручки</b> — покупатели платят медленнее. Считайте в днях.</li>
+    <li><b>Запасы растут быстрее выручки</b> — затоваривание или неликвид.</li>
+    <li><b>Деньги падают, займы растут</b> — оборот финансируется долгом.</li>
+    <li><b>Займы учредителю и связанным сторонам</b> — деньги выводятся из бизнеса.</li>
+    <li><b>Отрицательный капитал</b> — накопленные убытки больше вложений собственников.</li>
+    <li><b>Текущая ликвидность ниже 1</b> — краткосрочных активов не хватает на краткосрочные долги.</li>
+  </ul>
+  <div class="mats-inline"><b>Материалы:</b> Ковалёв «Анализ баланса», IAS 1, приказ №404, отчётность на dfo.kz.</div>
+</template>
+
+<template id="L3-prompts">
+  <div class="prompt"><b>Проверить классификацию</b><pre>Ты — аудитор, проверяющий баланс по МСФО и форме №404 (Казахстан). Ниже — обезличенная ОСВ (конечные сальдо) и мой баланс, собранный по ней.
+Проверь: все ли счета попали в правильные строки, вычтены ли контрсчета, не свёрнуты ли ДЗ и КЗ, верно ли разделены кратко- и долгосрочные статьи. Не пересчитывай суммы, только классификацию. Выведи таблицу «Счёт | Моя строка | Верная строка | Почему».
+[вставьте ОСВ и баланс]</pre><button class="btn btn-line copy" type="button">Скопировать</button></div>
+  <div class="prompt"><b>Оспорить выводы</b><pre>Вот мои пять наблюдений по балансу компании за два года и сам баланс (обезличен). Выступи как строгий кредитный комитет: какие выводы слабые, что я упустил, какие три вопроса задашь клиенту?
+[вставьте]</pre><button class="btn btn-line copy" type="button">Скопировать</button></div>
+  <div class="prompt"><b>Формулы для Excel</b><pre>В Excel на листе «Баланс» в столбце A коды строк формы №404, в столбцах C и D — суммы за 2024 и 2025 годы. Напиши формулы для: изменения в % по каждой строке, доли строки в валюте баланса, текущей ликвидности и проверки «актив − пассив = 0». Используй ПРОСМОТРX по коду строки, а не ссылки на конкретные ячейки.</pre><button class="btn btn-line copy" type="button">Скопировать</button></div>
+</template>
+
 <script>
+const OSV=[["1010", "Денежные средства в кассе", 300, 0, 4100, 4200, 200, 0], ["1030", "Денежные средства на текущих банковских счетах", 21800, 0, 695200, 707400, 9600, 0], ["1210", "Краткосрочная дебиторская задолженность покупателей", 81500, 0, 643200, 605800, 118900, 0], ["1330", "Товары", 104700, 0, 488000, 461100, 131600, 0], ["1420", "НДС к возмещению", 2100, 0, 61400, 59600, 3900, 0], ["1710", "Краткосрочные авансы выданные", 7200, 0, 54300, 49000, 12500, 0], ["2160", "Долгосрочная ДЗ: займ учредителю", 0, 0, 15000, 0, 15000, 0], ["2410", "Основные средства", 68500, 0, 13200, 0, 81700, 0], ["2420", "Амортизация основных средств", 0, 22200, 0, 6600, 0, 28800], ["2730", "Нематериальные активы", 900, 0, 0, 0, 900, 0], ["2740", "Амортизация нематериальных активов", 0, 400, 0, 100, 0, 500], ["3010", "Краткосрочные банковские займы", 0, 45000, 52000, 85000, 0, 78000], ["3110", "Корпоративный подоходный налог к уплате", 0, 2300, 6600, 5400, 0, 1100], ["3190", "Прочие налоги к уплате", 0, 2400, 28600, 28900, 0, 2700], ["3310", "Краткосрочная КЗ поставщикам", 0, 82600, 512800, 542600, 0, 112400], ["3350", "Задолженность по оплате труда", 0, 2400, 30900, 31200, 0, 2700], ["3510", "Краткосрочные авансы полученные", 0, 5100, 41200, 43000, 0, 6900], ["4010", "Долгосрочные банковские займы", 0, 20000, 5000, 0, 0, 15000], ["5030", "Вклады и паи (уставный капитал ТОО)", 0, 1000, 0, 0, 0, 1000], ["5610", "Нераспределённая прибыль отчётного года", 0, 0, 0, 21600, 0, 21600], ["5620", "Нераспределённая прибыль прошлых лет", 0, 103600, 0, 0, 0, 103600], ["6010", "Доход от реализации товаров", 0, 0, 574300, 574300, 0, 0], ["6280", "Прочие доходы", 0, 0, 2600, 2600, 0, 0], ["7010", "Себестоимость реализованных товаров", 0, 0, 461100, 461100, 0, 0], ["7110", "Расходы по реализации", 0, 0, 38700, 38700, 0, 0], ["7210", "Административные расходы", 0, 0, 31900, 31900, 0, 0], ["7310", "Расходы на вознаграждение (проценты по займам)", 0, 0, 16800, 16800, 0, 0], ["7480", "Прочие расходы", 0, 0, 1400, 1400, 0, 0], ["7710", "Расходы по корпоративному подоходному налогу", 0, 0, 5400, 5400, 0, 0]];
+const BALROWS=[{"g": "I. Краткосрочные активы"}, {"c": "010", "n": "Денежные средства и их эквиваленты", "a": 22100, "v": 9800, "h": "Касса 1010 + текущие счета 1030"}, {"c": "016", "n": "Краткосрочная торговая и прочая дебиторская задолженность", "a": 81500, "v": 118900, "h": "Только 1210. Авансы выданные сюда не входят"}, {"c": "020", "n": "Запасы", "a": 104700, "v": 131600, "h": "Товары 1330"}, {"c": "022", "n": "Прочие краткосрочные активы", "a": 9300, "v": 16400, "h": "НДС к возмещению 1420 + авансы выданные 1710"}, {"c": "100", "n": "Итого краткосрочных активов", "a": 217600, "v": 276700, "h": "Сумма строк: 010 + 016 + 020 + 022", "t": 1}, {"g": "II. Долгосрочные активы"}, {"c": "117", "n": "Долгосрочная торговая и прочая дебиторская задолженность", "a": 0, "v": 15000, "h": "Займ учредителю 2160 — долгосрочный"}, {"c": "121", "n": "Основные средства", "a": 46300, "v": 52900, "h": "2410 минус амортизация 2420"}, {"c": "125", "n": "Нематериальные активы", "a": 500, "v": 400, "h": "2730 минус амортизация 2740"}, {"c": "200", "n": "Итого долгосрочных активов", "a": 46800, "v": 68300, "h": "Сумма строк: 117 + 121 + 125", "t": 1}, {"c": "A", "n": "Баланс (актив)", "a": 264400, "v": 345000, "h": "Стр. 100 + стр. 200", "t": 1}, {"g": "III. Краткосрочные обязательства"}, {"c": "210", "n": "Краткосрочные финансовые обязательства (займы)", "a": 45000, "v": 78000, "h": "Краткосрочные займы 3010"}, {"c": "214", "n": "Краткосрочная торговая и прочая кредиторская задолженность", "a": 82600, "v": 112400, "h": "Поставщики 3310"}, {"c": "216", "n": "Текущие налоговые обязательства по подоходному налогу", "a": 2300, "v": 1100, "h": "КПН к уплате 3110"}, {"c": "217", "n": "Вознаграждения работникам", "a": 2400, "v": 2700, "h": "Оплата труда 3350"}, {"c": "219", "n": "Краткосрочные обязательства по договорам с покупателями", "a": 5100, "v": 6900, "h": "Авансы полученные 3510 — отдельно от КЗ"}, {"c": "222", "n": "Прочие краткосрочные обязательства", "a": 2400, "v": 2700, "h": "Прочие налоги 3190"}, {"c": "300", "n": "Итого краткосрочных обязательств", "a": 139800, "v": 203800, "h": "Сумма строк: 210 + 214 + 216 + 217 + 219 + 222", "t": 1}, {"g": "IV. Долгосрочные обязательства"}, {"c": "310", "n": "Долгосрочные финансовые обязательства (займы)", "a": 20000, "v": 15000, "h": "Долгосрочные займы 4010"}, {"c": "400", "n": "Итого долгосрочных обязательств", "a": 20000, "v": 15000, "h": "Сумма строк: 310", "t": 1}, {"g": "V. Капитал"}, {"c": "410", "n": "Уставный капитал", "a": 1000, "v": 1000, "h": "Вклады и паи 5030"}, {"c": "414", "n": "Нераспределённая прибыль", "a": 103600, "v": 125200, "h": "5610 + 5620: прибыль года и прошлых лет"}, {"c": "500", "n": "Всего капитал", "a": 104600, "v": 126200, "h": "Сумма строк: 410 + 414", "t": 1}, {"c": "P", "n": "Баланс (пассив)", "a": 264400, "v": 345000, "h": "Стр. 300 + 400 + 500", "t": 1}];
+const fmt=n=>n===0?"—":n.toLocaleString("ru-RU");
+const AKEY="finai-answers-v1";
+let ANS={}; try{ANS=JSON.parse(localStorage.getItem(AKEY)||"{}")}catch(e){ANS={}}
+function saveAns(){try{localStorage.setItem(AKEY,JSON.stringify(ANS))}catch(e){}}
+const TABS=[["practice","Практика"],["theory","Теория"],["prompts","Промпты для ИИ"]];
+function lessonShell(i){
+  return `<div class="lesson" data-m="${i}">
+    <div class="ltabs" role="tablist">${TABS.map((t,k)=>`<button class="ltab" type="button" role="tab" id="tab-${i}-${t[0]}" aria-selected="${k===0}" data-tab="${t[0]}">${t[1]}</button>`).join("")}</div>
+    <p class="small">Начните с практики. Если задание идёт тяжело, откройте теорию.</p>
+    ${TABS.map((t,k)=>`<div class="lpanel" data-panel="${t[0]}"${k?" hidden":""}></div>`).join("")}
+  </div>`;
+}
+function fillLessons(){
+  document.querySelectorAll(".lesson").forEach(L=>{
+    const i=L.dataset.m;
+    TABS.forEach(([t])=>{const tpl=document.getElementById(`L${i}-${t}`);const p=L.querySelector(`[data-panel="${t}"]`);if(tpl&&p)p.appendChild(tpl.content.cloneNode(true));});
+  });
+  const osv=document.getElementById("osv-table");
+  if(osv){
+    const tot=[2,3,4,5,6,7].map(k=>OSV.reduce((s,r)=>s+r[k],0));
+    osv.innerHTML=`<table><thead><tr><th>Счёт</th><th>Наименование</th><th class="n">Сальдо нач. Дт</th><th class="n">Сальдо нач. Кт</th><th class="n">Обороты Дт</th><th class="n">Обороты Кт</th><th class="n">Сальдо кон. Дт</th><th class="n">Сальдо кон. Кт</th></tr></thead><tbody>${
+      OSV.map(r=>`<tr><td class="code">${r[0]}</td><td>${r[1]}</td>${r.slice(2).map(v=>`<td class="n">${fmt(v)}</td>`).join("")}</tr>`).join("")
+    }<tr class="tot"><td></td><td>Итого</td>${tot.map(v=>`<td class="n">${fmt(v)}</td>`).join("")}</tr></tbody></table>`;
+  }
+  const bi=document.getElementById("bal-input");
+  if(bi){
+    bi.innerHTML=`<table><thead><tr><th>Код</th><th>Статья</th><th class="n">2024</th><th class="n">2025</th><th></th></tr></thead><tbody>${
+      BALROWS.map(r=>r.g?`<tr class="grp"><td colspan="5">${r.g}</td></tr>`:
+      `<tr class="${r.t?"tot":""}"><td class="code">${/^\d/.test(r.c)?r.c:""}</td><td>${r.n}</td><td class="n">${fmt(r.a)}</td>
+        <td class="n"><input class="chk bal-in" id="b25-${r.c}" inputmode="decimal" data-ans="${r.v}" data-tol="0.5" data-hint="${r.h}" aria-label="${r.n}, 2025"></td><td class="st"></td></tr>
+       <tr class="hrow" hidden><td colspan="5"><span class="hint"></span></td></tr>`).join("")
+    }</tbody></table>`;
+  }
+  document.querySelectorAll(".lesson [id]").forEach(el=>{
+    if(!(el.id in ANS))return;
+    if(el.type==="checkbox")el.checked=!!ANS[el.id]; else if("value" in el)el.value=ANS[el.id];
+  });
+}
+const num=v=>parseFloat(String(v).replace(/[\s  ]/g,"").replace(",",".").replace("−","-").replace("%",""));
+function evalEl(el){
+  const v=el.value.trim(); if(!v)return false;
+  if(el.tagName==="SELECT")return v===el.dataset.ans;
+  const n=num(v), a=parseFloat(el.dataset.ans), tol=parseFloat(el.dataset.tol||"0.5");
+  return !isNaN(n)&&Math.abs(n-a)<=tol;
+}
+function checkTask(task){
+  let ok=0,all=0;
+  task.querySelectorAll(".q").forEach(q=>{
+    const els=[...q.querySelectorAll(".chk")]; let good=true; const hints=[];
+    els.forEach(el=>{const r=evalEl(el);all++;if(r)ok++;else{good=false;if(el.dataset.hint)hints.push(el.dataset.hint);}
+      el.classList.toggle("ok",r);el.classList.toggle("bad",!r);});
+    const st=q.querySelector(".st"); if(st){st.textContent=good?"✓":"✗";st.className="st "+(good?"ok":"bad");}
+    let h=q.querySelector(".hint"); if(!good&&hints.length){if(!h){h=document.createElement("div");h.className="hint";q.appendChild(h);}h.textContent="Подсказка: "+hints.join(" · ");}else if(h)h.remove();
+  });
+  task.querySelectorAll("tr .bal-in").forEach(el=>{
+    const r=evalEl(el);all++;if(r)ok++;el.classList.toggle("ok",r);el.classList.toggle("bad",!r);
+    const tr=el.closest("tr"),st=tr.querySelector(".st"),hr=tr.nextElementSibling;
+    st.textContent=r?"✓":"✗";st.className="st "+(r?"ok":"bad");
+    hr.hidden=r;hr.querySelector(".hint").textContent="Подсказка: "+el.dataset.hint;
+  });
+  const res=task.querySelector(".task-res");
+  if(res){res.textContent=ok===all?`Всё верно: ${ok} из ${all}. Баланс сходится.`:`Верно ${ok} из ${all}. Исправьте строки с подсказками.`;res.className="task-res "+(ok===all?"ok":"bad");}
+}
+document.addEventListener("click",e=>{
+  const tab=e.target.closest(".ltab");
+  if(tab){const L=tab.closest(".lesson");L.querySelectorAll(".ltab").forEach(b=>b.setAttribute("aria-selected",b===tab));
+    L.querySelectorAll(".lpanel").forEach(p=>p.hidden=p.dataset.panel!==tab.dataset.tab);return;}
+  const cb=e.target.closest(".check-btn"); if(cb){checkTask(cb.closest(".task"));return;}
+  const an=e.target.closest(".check-anon");
+  if(an){const t=an.closest(".task"),ta=t.querySelector(".anon"),res=t.querySelector(".anon-res");
+    const txt=ta.value.trim(); if(!txt){res.textContent="Сначала вставьте свой вариант.";res.className="anon-res bad";return;}
+    const leaks=ta.dataset.forbid.split("|").filter(p=>new RegExp(p,"i").test(txt)).map(p=>p.replace(" ?"," "));
+    res.textContent=leaks.length?"Утечки: "+leaks.join(", ")+". Замените или удалите.":"Утечек не найдено: названия, реквизиты и исходные суммы убраны.";
+    res.className="anon-res "+(leaks.length?"bad":"ok");return;}
+  const cp=e.target.closest(".copy");
+  if(cp){const pre=cp.parentElement.querySelector("pre"),txt=pre.textContent;
+    const done=()=>{cp.textContent="Скопировано";cp.classList.add("done");setTimeout(()=>{cp.textContent="Скопировать";cp.classList.remove("done")},1600)};
+    const fallback=()=>{const r=document.createRange();r.selectNodeContents(pre);const s=getSelection();s.removeAllRanges();s.addRange(r);cp.textContent="Выделено — нажмите Ctrl+C";};
+    try{navigator.clipboard.writeText(txt).then(done,fallback)}catch(err){fallback()}}
+});
+document.addEventListener("input",e=>{const el=e.target;if(!el.id||!el.closest(".lesson"))return;
+  ANS[el.id]=el.type==="checkbox"?el.checked:el.value;saveAns();});
+document.addEventListener("change",e=>{const el=e.target;if(!el.id||!el.closest(".lesson"))return;
+  ANS[el.id]=el.type==="checkbox"?el.checked:el.value;saveAns();});
+
 const BLOCKS=[
  {id:"b1",name:"Фундамент",span:"модули 1–2 · дни 1–2",ids:[1,2]},
  {id:"b2",name:"Три отчёта",span:"модули 3–5 · дни 3–5",ids:[3,4,5]},
@@ -494,19 +1091,19 @@ const BLOCKS=[
  {id:"b4",name:"Результат и автоматизация",span:"модули 9–10 · дни 11–12",ids:[9,10]}
 ];
 const MODS={
- 1:{title:"Данные аналитика в РК",day:"1",time:"2 ч",ai:false,
+ 1:{lesson:true,title:"Данные аналитика в РК",day:"1",time:"2 ч",ai:false,
   why:"Анализ начинается с понимания, какие данные доступны и насколько им можно доверять.",
   topics:["Сущность финансового анализа: кто читает анализ и какие решения на нём принимает","Источники: формы по приказу №404 и форма МСБ, ФНО, банковские выписки, кредитный отчёт","Двух- и трёхзначные коды строк, как привести разные формы к одной структуре","Связи между источниками: что с чем должно сходиться","Базовая точка: сколько сейчас занимает полный анализ одного клиента"],
   practice:"Опишите свой процесс анализа по шагам и засеките время. Составьте карту источников: какой документ подтверждает какую цифру.",
   result:"Карта источников и базовое время анализа",
   mats:["Приказ Минфина РК №404","НСФО для МСБ","Формы ФНО на Әділет","Структура кредитного отчёта ПКБ"]},
- 2:{title:"ИИ-помощник: промпты, безопасность, проверка",day:"2",time:"5 ч",ai:true,
+ 2:{lesson:true,title:"ИИ-помощник: промпты, безопасность, проверка",day:"2",time:"5 ч",ai:true,
   why:"ИИ подключается до разбора отчётов, чтобы в модулях 3–8 использовать его как наставника и проверяющего.",
   topics:["Как устроены языковые модели и почему ошибаются в арифметике и кодах строк","Структура промпта: роль, цель, контекст, формат, критерии; итерации","Что можно отдавать в облако, а что нет: БИН, названия, суммы, контрагенты","Обезличивание: «Компания А», масштабирование сумм, коды контрагентов","Локальная модель на своём ПК для работы с реальными цифрами","Проверка ответов: галлюцинации, ссылки на источники, сопоставление","Сбор публичной информации о контрагенте: регистрация, госзакупки, суды"],
   practice:"Библиотека из 10 промптов, регламент обезличивания на 1 страницу и рабочая локальная модель. Досье на условного контрагента, все факты со ссылками.",
   result:"Промпты, регламент, локальная модель, досье",
   mats:["Руководство по промптам Claude","Ollama или LM Studio"]},
- 3:{title:"Баланс",day:"3",time:"3 ч",ai:false,
+ 3:{lesson:true,title:"Баланс",day:"3",time:"3 ч",ai:false,
   why:"Баланс показывает, чем компания владеет и кому должна; на нём строятся все остальные отчёты и коэффициенты.",
   topics:["Сущность баланса: активы, обязательства, капитал","Структура формы №404 и формы МСБ","Составление баланса с нуля по оборотно-сальдовой ведомости","Вертикальный и горизонтальный анализ","На что смотреть: дебиторка, запасы, займы связанным сторонам, отрицательный капитал"],
   practice:"Соберите баланс компании-образца по ОСВ и сверьте с формой. Разберите балансы двух опубликованных компаний за 3 года: 5 главных наблюдений.",
@@ -571,15 +1168,15 @@ function render(){
      <details class="mod${done[i]?" done":""}" id="m${i}">
       <summary><span class="num">${i}</span>
        <span class="sum-text"><h3>${esc(m.title)}</h3>
-        <span class="meta">${dayLabel(m.day)} · ${m.time}${m.ai?' <span class="ai-mark">ИИ</span>':""} <span class="done-mark">пройден</span></span></span>
+        <span class="meta">${dayLabel(m.day)} · ${m.time}${m.ai?' <span class="ai-mark">ИИ</span>':""} ${m.lesson?'<span class="lesson-mark">урок</span>':'<span class="soon">урок готовится</span>'} <span class="done-mark">пройден</span></span></span>
        <span class="round"><svg class="ico"><use href="#i-plus"/></svg></span></summary>
       <div class="body">
        <p class="why">${esc(m.why)}</p>
-       <ol>${m.topics.map(x=>`<li>${esc(x)}</li>`).join("")}</ol>
+       ${m.lesson?lessonShell(i):`<ol>${m.topics.map(x=>`<li>${esc(x)}</li>`).join("")}</ol>
        <div class="cols">
         <div class="box practice"><b>Практика</b><p>${esc(m.practice)}</p></div>
         <div class="box mats"><b>Материалы</b><ul>${m.mats.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
-       </div>
+       </div>`}
        <label class="done-toggle"><input type="checkbox" id="chk-${i}" data-id="${i}" ${done[i]?"checked":""}> Модуль пройден</label>
       </div></details>`}).join("")}</div>`).join("");
   document.querySelectorAll("input[data-id]").forEach(cb=>cb.addEventListener("change",e=>{
@@ -588,6 +1185,7 @@ function render(){
   }));
   document.getElementById("plan-rows").innerHTML=IDS.map(i=>{const m=MODS[i];
     return `<tr><td><span class="day">${m.day}</span></td><td>${i}. ${esc(m.title)}</td><td>${m.time}</td><td>${esc(m.result)}</td></tr>`}).join("");
+  fillLessons();
 }
 function updateProgress(){
   const n=IDS.filter(i=>done[i]).length;
