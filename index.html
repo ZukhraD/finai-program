@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Финанализ + ИИ</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Программа обучения: финансовый анализ юрлиц РК и применение ИИ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Roboto:wght@400;500;700&display=swap">
+<style>
+/* Layout: учебный план — шапка с итогом, логика порядка, 4 блока модулей с раскрывающимися карточками, график, библиотека материалов; прогресс хранится у зрителя */
+:root{
+  --bg:#FFFFFF; --surface:#F6F6F4; --line:#E5E4E2; --fg:#272727; --muted:#5E5F63;
+  --blue:#023DFF; --blue-soft:#E8EEFF; --lime:#00BB00; --lime-soft:#E3F7E3; --on-accent:#FFFFFF;
+  --f-display:"Jost","Futura PT",Futura,"Century Gothic",sans-serif;
+  --f-body:"Roboto",Verdana,system-ui,sans-serif;
+  --f-sys:Verdana,Geneva,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#17181B; --surface:#202227; --line:#33353B; --fg:#ECEBE8; --muted:#A3A4A9;
+  --blue:#5C82FF; --blue-soft:#1C2645; --lime:#33CC33; --lime-soft:#17301A; --on-accent:#0E0F12; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#17181B; --surface:#202227; --line:#33353B; --fg:#ECEBE8; --muted:#A3A4A9;
+  --blue:#5C82FF; --blue-soft:#1C2645; --lime:#33CC33; --lime-soft:#17301A; --on-accent:#0E0F12; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:16px/1.55 var(--f-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1040px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+a{color:var(--blue)}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+header{padding-block:40px 28px;border-bottom:1px solid var(--line);display:grid;gap:20px}
+.eyebrow{font:500 12px/1 var(--f-sys);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:clamp(32px,6vw,54px);font-weight:600;letter-spacing:-.01em}
+h1 span{color:var(--blue)}
+.lead{max-width:62ch;color:var(--muted);margin:0;font-size:17px}
+.facts{display:flex;flex-wrap:wrap;gap:10px 28px;font-variant-numeric:tabular-nums}
+.facts div{display:grid}
+.facts b{font:600 26px/1.1 var(--f-display)}
+.facts small{color:var(--muted);font-size:13px}
+.progress{display:grid;gap:6px;max-width:420px}
+.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--lime);transition:width .3s}
+.progress small{color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
+
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;gap:8px;flex-wrap:wrap;padding-block:14px;border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.tab{font:500 14px var(--f-body);border:1px solid var(--line);background:var(--bg);color:var(--fg);padding:8px 14px;border-radius:999px;cursor:pointer}
+.tab[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+
+section.part{padding-block:36px 8px;display:grid;gap:18px}
+.part-head{display:grid;gap:6px}
+.part-head h2{font-size:clamp(24px,4vw,32px);font-weight:600}
+.part-head p{margin:0;color:var(--muted);max-width:68ch}
+
+.logic{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.step{border-top:3px solid var(--blue);padding-top:12px;display:grid;gap:6px;min-width:0}
+.step.ai{border-top-color:var(--lime)}
+.step .eyebrow{color:var(--blue)} .step.ai .eyebrow{color:var(--lime)}
+.step h3{font-size:18px}
+.step p{margin:0;font-size:14px;color:var(--muted)}
+
+.block{display:grid;gap:10px}
+.block-title{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;padding-top:8px}
+.block-title h3{font-size:20px}
+.block-title span{font-size:14px;color:var(--muted)}
+
+details.mod{border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+details.mod[open]{background:var(--surface)}
+details.mod.done summary h3{color:var(--muted)}
+summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:14px 16px}
+summary::-webkit-details-marker{display:none}
+.num{font:600 16px/1 var(--f-display);width:44px;height:44px;border-radius:8px;display:grid;place-items:center;font-variant-numeric:tabular-nums;background:var(--blue-soft);color:var(--blue)}
+.mod.done .num{background:var(--lime);color:var(--on-accent)}
+.sum-text{min-width:0;display:grid;gap:3px}
+.sum-text h3{font-size:18px;font-weight:600}
+.meta{font-size:13px;color:var(--muted)}
+.ai-mark{display:inline-block;font:500 11px/1 var(--f-sys);letter-spacing:.05em;padding:3px 6px;border-radius:4px;background:var(--lime-soft);color:var(--lime);margin-left:6px;vertical-align:1px}
+.chev{width:20px;height:20px;transition:transform .2s;color:var(--muted)}
+details[open] .chev{transform:rotate(180deg)}
+.body{padding:0 16px 18px 74px;display:grid;gap:16px}
+.why{margin:0;color:var(--muted);font-size:15px;max-width:70ch}
+.body ol,.body ul{margin:0;padding-left:20px;display:grid;gap:4px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.box{padding:12px 14px;background:var(--bg);border:1px solid var(--line);border-radius:8px;min-width:0}
+.box.practice{border-left:3px solid var(--blue)}
+.box b{font:600 12px/1 var(--f-sys);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:8px;color:var(--muted)}
+.box p{margin:0}
+.box ul{font-size:14px}
+.done-toggle{display:inline-flex;gap:8px;align-items:center;font-size:14px;cursor:pointer;justify-self:start}
+.done-toggle input{width:18px;height:18px;accent-color:var(--lime)}
+
+table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 12px var(--f-sys);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);background:var(--surface)}
+tr:last-child td{border-bottom:0}
+
+.lib{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.lib-group{border:1px solid var(--line);border-radius:10px;padding:16px;display:grid;gap:10px;align-content:start;min-width:0}
+.lib-group h3{font-size:17px}
+.lib-group ul{margin:0;padding-left:18px;display:grid;gap:8px;font-size:14px}
+.lib-group li small{display:block;color:var(--muted)}
+.rule{border:1px solid var(--line);border-left:3px solid var(--lime);border-radius:8px;padding:12px 14px;max-width:760px;display:grid;gap:6px}
+.rule b{font:600 12px/1 var(--f-sys);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.rule p{margin:0}
+.note{font-size:14px;color:var(--muted);max-width:70ch;margin:0}
+footer{padding-block:32px 48px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:36px}
+
+@media (max-width:560px){
+  .body{padding-left:16px}
+  summary{grid-template-columns:auto 1fr}
+  .chev{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Программа обучения · самостоятельный курс</div>
+  <h1>Финансовый анализ <span>+ ИИ</span></h1>
+  <p class="lead">Комплексный анализ юрлица РК от исходных форм до заключения для банка и собственника. ИИ подключается со второго дня как помощник и к концу курса берёт на себя рутину.</p>
+  <div class="facts">
+    <div><b>10</b><small>модулей</small></div>
+    <div><b>12</b><small>рабочих дней</small></div>
+    <div><b>3–4 ч</b><small>в день</small></div>
+    <div><b>РК</b><small>формы №404 и МСБ</small></div>
+  </div>
+  <div class="progress" aria-live="polite">
+    <div class="bar"><i id="pbar"></i></div>
+    <small id="ptext">Пройдено 0 из 10 модулей</small>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Разделы">
+  <button class="tab" data-f="program" aria-pressed="true" id="tab-program">Программа</button>
+  <button class="tab" data-f="plan" aria-pressed="false" id="tab-plan">График</button>
+  <button class="tab" data-f="lib" aria-pressed="false" id="tab-lib">Материалы</button>
+</nav>
+
+<section class="part" data-sec="program" id="logic">
+  <div class="part-head">
+    <span class="eyebrow">Почему такой порядок</span>
+    <h2>От данных к выводу</h2>
+    <p>Каждый блок опирается на предыдущий: нельзя считать коэффициенты, не понимая отчётов, и нельзя доверить ИИ расчёт, который не умеешь проверить сам.</p>
+  </div>
+  <div class="logic">
+    <div class="step"><span class="eyebrow">Модули 1–2</span><h3>Фундамент</h3><p>Какие данные есть у аналитика в РК и как безопасно работать с ИИ. Дальше ИИ помогает в каждом модуле.</p></div>
+    <div class="step"><span class="eyebrow">Модули 3–5</span><h3>Три отчёта</h3><p>Баланс, ОПиУ, ДДС: составить с нуля, сверить с декларациями и выписками.</p></div>
+    <div class="step"><span class="eyebrow">Модули 6–8</span><h3>Анализ и прогноз</h3><p>Коэффициенты и признаки манипуляций, группа компаний, финмодель и прогноз ДДС.</p></div>
+    <div class="step ai"><span class="eyebrow">Модули 9–10</span><h3>Результат и автоматизация</h3><p>Заключение для трёх читателей, итоговый проект и локальный конвейер.</p></div>
+  </div>
+  <div class="rule"><b>Правило ускорения</b><p>Начинайте каждый модуль с практики. Если сделали её верно меньше чем за час, теорию пропустите и переходите к следующему модулю. Знакомые темы — баланс, ОПиУ, ДДС — так займут час-полтора вместо трёх.</p><p>Если день сорвался, не проходите два модуля за раз: сдвиньте график на день.</p></div>
+</section>
+
+<div id="main"></div>
+
+<section class="part" data-sec="plan" id="plan" hidden>
+  <div class="part-head">
+    <span class="eyebrow">График</span>
+    <h2>12 рабочих дней, по 3–4 часа</h2>
+    <p>Один модуль в день. Модули 7 и 8 в один день не помещаются: в каждом 7–8 часов практики, поэтому на них по два дня. Засеките время полного анализа одного клиента в день 1 и в день 12: цель — вдвое быстрее при том же качестве.</p>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>День</th><th>Модуль</th><th>Результат</th></tr></thead>
+    <tbody id="plan-rows"></tbody>
+  </table></div>
+</section>
+
+<section class="part" data-sec="lib" id="lib" hidden>
+  <div class="part-head">
+    <span class="eyebrow">Материалы</span>
+    <h2>На чём учиться</h2>
+    <p>Нормативная база, книги, данные для практики и инструменты. В каждом модуле указано, что из этого нужно именно для него.</p>
+  </div>
+  <div class="lib">
+    <div class="lib-group">
+      <h3>Нормативная база РК</h3>
+      <ul>
+        <li><a href="https://adilet.zan.kz" target="_blank" rel="noopener">Әділет — база нормативных актов РК</a><small>Действующие редакции всех документов ниже</small></li>
+        <li>Приказ Минфина РК №404<small>Перечень и формы финансовой отчётности, коды строк</small></li>
+        <li>НСФО для субъектов малого и среднего бизнеса<small>Форма МСБ и правила её составления</small></li>
+        <li>Налоговый кодекс РК и формы ФНО 100.00, 200.00, 300.00, 910.00<small>Сверка выручки, ФОТ, НДС с отчётностью</small></li>
+      </ul>
+    </div>
+    <div class="lib-group">
+      <h3>Стандарты МСФО</h3>
+      <ul>
+        <li><a href="https://www.ifrs.org" target="_blank" rel="noopener">IFRS Foundation</a><small>Тексты стандартов, есть русские переводы</small></li>
+        <li>IAS 1 «Представление финансовой отчётности»<small>Баланс и ОПиУ</small></li>
+        <li>IAS 7 «Отчёт о движении денежных средств»<small>Прямой и косвенный метод</small></li>
+        <li>IFRS 10 «Консолидированная финансовая отчётность»<small>Правила консолидации группы</small></li>
+      </ul>
+    </div>
+    <div class="lib-group">
+      <h3>Книги</h3>
+      <ul>
+        <li>Ковалёв В.В., Ковалёв Вит.В. «Анализ баланса, или Как понимать баланс»<small>Модули 3, 6</small></li>
+        <li>Шеремет А.Д., Негашев Е.В. «Методика финансового анализа деятельности коммерческих организаций»<small>Модули 3–6, коэффициенты</small></li>
+        <li>Шилит Г. «Финансовые махинации»<small>Модуль 6, признаки манипуляций</small></li>
+        <li>Беннинга С. «Финансовое моделирование с использованием Excel»<small>Модуль 8</small></li>
+        <li>Дамодаран А. «Инвестиционная оценка»<small>Модуль 8, NPV и IRR</small></li>
+        <li>Нафлик К. «Сторителлинг с данными»<small>Модуль 9, графики</small></li>
+        <li>Минто Б. «Принцип пирамиды Минто»<small>Модуль 9, структура заключения</small></li>
+      </ul>
+    </div>
+    <div class="lib-group">
+      <h3>Данные для практики</h3>
+      <ul>
+        <li><a href="https://dfo.kz" target="_blank" rel="noopener">Депозитарий финансовой отчётности</a><small>Опубликованная отчётность организаций РК</small></li>
+        <li><a href="https://kase.kz" target="_blank" rel="noopener">KASE</a><small>Отчётность эмитентов, аудиторские заключения</small></li>
+        <li><a href="https://1cb.kz" target="_blank" rel="noopener">Первое кредитное бюро</a><small>Структура кредитного отчёта</small></li>
+        <li>Компания-образец из вашего Excel-инструмента<small>Вымышленные данные для всех заданий</small></li>
+      </ul>
+    </div>
+    <div class="lib-group">
+      <h3>ИИ и инструменты</h3>
+      <ul>
+        <li><a href="https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank" rel="noopener">Руководство по промптам Claude</a><small>Модуль 2</small></li>
+        <li><a href="https://ollama.com" target="_blank" rel="noopener">Ollama</a> или <a href="https://lmstudio.ai" target="_blank" rel="noopener">LM Studio</a><small>Локальная модель для реальных данных</small></li>
+        <li><a href="https://learn.microsoft.com/ru-ru/power-query/" target="_blank" rel="noopener">Документация Power Query</a><small>Модуль 7</small></li>
+        <li><a href="https://pandas.pydata.org/docs/" target="_blank" rel="noopener">pandas</a>, openpyxl, python-docx<small>Модули 7, 10</small></li>
+      </ul>
+    </div>
+  </div>
+  <p class="note">Реальные данные клиентов обрабатываются только на вашем компьютере. Для практики используйте компанию-образец и опубликованную отчётность из депозитария или KASE.</p>
+</section>
+
+<footer>Отметки о прохождении хранятся только в вашем браузере.</footer>
+</div>
+
+<script>
+const BLOCKS=[
+ {name:"Фундамент",span:"модули 1–2",ids:[1,2]},
+ {name:"Три отчёта",span:"модули 3–5",ids:[3,4,5]},
+ {name:"Анализ и прогноз",span:"модули 6–8",ids:[6,7,8]},
+ {name:"Результат и автоматизация",span:"модули 9–10",ids:[9,10]}
+];
+const MODS={
+ 1:{title:"Данные аналитика в РК",weeks:"1",time:"2 ч",ai:false,
+  why:"Анализ начинается с понимания, какие данные доступны и насколько им можно доверять.",
+  topics:["Сущность финансового анализа: кто читает анализ и какие решения на нём принимает","Источники: формы по приказу №404 и форма МСБ, ФНО, банковские выписки, кредитный отчёт","Двух- и трёхзначные коды строк, как привести разные формы к одной структуре","Связи между источниками: что с чем должно сходиться","Базовая точка: сколько сейчас занимает полный анализ одного клиента"],
+  practice:"Опишите свой процесс анализа по шагам и засеките время. Составьте карту источников: какой документ подтверждает какую цифру.",
+  result:"Карта источников и базовое время анализа",
+  mats:["Приказ Минфина РК №404","НСФО для МСБ","Формы ФНО на Әділет","Структура кредитного отчёта ПКБ"]},
+ 2:{title:"ИИ-помощник: промпты, безопасность, проверка",weeks:"2",time:"5 ч",ai:true,
+  why:"ИИ подключается до разбора отчётов, чтобы в модулях 3–8 использовать его как наставника и проверяющего.",
+  topics:["Как устроены языковые модели и почему ошибаются в арифметике и кодах строк","Структура промпта: роль, цель, контекст, формат, критерии; итерации","Что можно отдавать в облако, а что нет: БИН, названия, суммы, контрагенты","Обезличивание: «Компания А», масштабирование сумм, коды контрагентов","Локальная модель на своём ПК для работы с реальными цифрами","Проверка ответов: галлюцинации, ссылки на источники, сопоставление","Сбор публичной информации о контрагенте: регистрация, госзакупки, суды"],
+  practice:"Библиотека из 10 промптов, регламент обезличивания на 1 страницу и рабочая локальная модель. Досье на условного контрагента, все факты со ссылками.",
+  result:"Промпты, регламент, локальная модель, досье",
+  mats:["Руководство по промптам Claude","Ollama или LM Studio"]},
+ 3:{title:"Баланс",weeks:"3",time:"3 ч",ai:false,
+  why:"Баланс показывает, чем компания владеет и кому должна; на нём строятся все остальные отчёты и коэффициенты.",
+  topics:["Сущность баланса: активы, обязательства, капитал","Структура формы №404 и формы МСБ","Составление баланса с нуля по оборотно-сальдовой ведомости","Вертикальный и горизонтальный анализ","На что смотреть: дебиторка, запасы, займы связанным сторонам, отрицательный капитал"],
+  practice:"Соберите баланс компании-образца по ОСВ и сверьте с формой. Разберите балансы двух опубликованных компаний за 3 года: 5 главных наблюдений.",
+  result:"Баланс с нуля и разбор двух компаний",
+  mats:["Ковалёв «Анализ баланса»","IAS 1","Отчётность с dfo.kz"]},
+ 4:{title:"ОПиУ и сверка с налогами",weeks:"4",time:"3 ч",ai:false,
+  why:"Прибыль связывает два баланса через нераспределённую прибыль, а налоговые декларации проверяют её реальность.",
+  topics:["Сущность ОПиУ и связь с балансом","Составление ОПиУ с нуля","Маржинальность, EBITDA, нормализация: разовые доходы, курсовые разницы, связанные стороны","Сверка выручки с ФНО 100.00, 300.00, 910.00 и оборотами по выпискам","Сверка ФОТ с ФНО 200.00"],
+  practice:"Соберите ОПиУ компании-образца, рассчитайте нормализованную EBITDA и найдите расхождения выручки с декларациями.",
+  result:"ОПиУ, EBITDA и таблица сверок",
+  mats:["IAS 1","Налоговый кодекс РК, формы ФНО","Шеремет, Негашев, раздел о прибыли"]},
+ 5:{title:"Движение денежных средств",weeks:"5",time:"3 ч",ai:false,
+  why:"Банк погашается деньгами, а не прибылью. ДДС объясняет, куда ушла прибыль, и готовит основу для прогноза.",
+  topics:["Операционная, инвестиционная и финансовая деятельность","Прямой метод по банковским выпискам","Косвенный метод из баланса и ОПиУ","Прибыль есть, денег нет: разбор причин","Транзит, займы учредителей, признаки обналичивания"],
+  practice:"Постройте ДДС компании-образца обоими методами и сверьте результат. Объясните разрыв между прибылью и операционным потоком.",
+  result:"ДДС двумя методами",
+  mats:["IAS 7","Выписки компании-образца"]},
+ 6:{title:"Финансовое состояние и признаки манипуляций",weeks:"6",time:"4 ч",ai:false,
+  why:"Когда три отчёта собраны и сверены, их можно сводить в коэффициенты и оценивать устойчивость компании.",
+  topics:["Ликвидность, оборачиваемость, рентабельность, финансовая устойчивость","Долговая нагрузка: долг/EBITDA, DSCR, сверка с кредитным отчётом","Как интерпретировать коэффициенты по отрасли и в динамике","Признаки манипуляций: несовпадения между отчётами, декларациями и выписками","Статусы «недостаточно данных», «требует проверки», «критический риск» вместо нулей"],
+  practice:"Рассчитайте коэффициенты компании-образца за 3 года, отметьте статусы и найдите 3 признака возможной манипуляции в опубликованной отчётности.",
+  result:"Таблица коэффициентов со статусами",
+  mats:["Шеремет, Негашев","Шилит «Финансовые махинации»","Кредитный отчёт ПКБ"]},
+ 7:{title:"Группа компаний и автоматизация в Excel",weeks:"7–8",time:"8 ч",ai:true,
+  why:"Ручные расчёты из модулей 3–6 теперь превращаются в инструмент, который работает и для одной компании, и для группы.",
+  topics:["Консолидация: исключение внутригрупповых оборотов, займов и дебиторки","Power Query: сбор отчётности 5–7 компаний в одну модель","Формулы с ИИ: ПРОСМОТРX, СУММЕСЛИМН, динамические массивы","15 формул-проверок: баланс ↔ ОПиУ, ОПиУ ↔ ФНО, выручка ↔ выписки, кредиты ↔ кредитный отчёт","Макросы VBA с ИИ: скрытие пустых периодов и компаний, защита формул","Как читать и тестировать код от ИИ"],
+  practice:"Консолидируйте группу из 3 компаний через Power Query. Добавьте 15 проверок в Excel-инструмент и автоматизируйте самую долгую ручную операцию.",
+  result:"Консолидация, 15 проверок, первая автоматизация",
+  mats:["IFRS 10","Документация Power Query","Ваш Excel-инструмент"]},
+ 8:{title:"Финмодель, прогноз ДДС и инвестиционные показатели",weeks:"9–10",time:"7 ч",ai:true,
+  why:"Анализ прошлого отвечает, какая компания сейчас; прогноз отвечает, сможет ли она платить по кредиту.",
+  topics:["Цели модели: кредит, инвестиции, планирование","Допущения: выручка из контрактной базы, затраты, капвложения, долг","Прогноз ДДС на 12–24 месяца, кассовые разрывы","Базовый и стрессовый сценарии","NPV, IRR, срок окупаемости, DSCR по прогнозу; потребность в финансировании","ИИ для перебора сценариев и поиска ошибок в модели"],
+  practice:"Постройте модель компании-образца на 24 месяца с двумя сценариями и рассчитайте потребность в финансировании.",
+  result:"Финмодель со стресс-сценарием",
+  mats:["Беннинга «Финансовое моделирование с использованием Excel»","Дамодаран «Инвестиционная оценка»"]},
+ 9:{title:"Визуализация и аналитическое заключение",weeks:"11",time:"4 ч",ai:true,
+  why:"Расчёт ценен, только когда читатель понял вывод за 10 минут.",
+  topics:["График под вопрос: динамика — линия, структура долга — столбцы, мост прибыли — водопад","Дашборд «Сводка клиента» на один экран","Структура заключения: резюме, бизнес, финансовое положение, долг, прогноз, риски, вывод","Три читателя: кредитный аналитик, консультант, собственник — без дублирования расчётов","Связка Excel → Word через автополя","ИИ как второй аналитик: оспорить вывод и найти противоречия"],
+  practice:"Дашборд из 6 показателей и 3 графиков. Шаблон заключения в Word с 20+ автополями и выводы по компании-образцу, каждое утверждение сверено с цифрой.",
+  result:"Дашборд и шаблон заключения",
+  mats:["Нафлик «Сторителлинг с данными»","Минто «Принцип пирамиды Минто»"]},
+ 10:{title:"Итоговый проект и локальный конвейер",weeks:"12",time:"5 ч",ai:true,
+  why:"Проект собирает все модули в один рабочий процесс, а конвейер закрепляет скорость.",
+  topics:["Полный анализ компании-образца или группы из 3 компаний за 1 рабочий день","Конвейер на Python: чтение .xlsm → проверки → обезличенные показатели → локальная модель → черновик Word","Жёсткий формат ответа модели и журнал действий","Финальное решение всегда за аналитиком"],
+  practice:"Проведите полный анализ и сравните время с базовой точкой из модуля 1. Запустите конвейер и сравните черновик со своим заключением.",
+  result:"Анализ за 1 день и рабочий конвейер",
+  mats:["pandas, openpyxl, python-docx","Ollama"]}
+};
+
+const KEY="finai-progress-v2";
+let done={};
+try{done=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){done={}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}}
+const esc=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const chev='<svg class="chev" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const TOTAL=Object.keys(MODS).length;
+
+function render(){
+  document.getElementById("main").innerHTML=`<section class="part" data-sec="program" id="modules">
+   <div class="part-head"><span class="eyebrow">Модули</span><h2>10 модулей</h2><p>Откройте модуль, чтобы увидеть темы, практику и материалы. Отметка <span class="ai-mark">ИИ</span> — модули, где ИИ входит в основную работу.</p></div>
+   ${BLOCKS.map(b=>`<div class="block"><div class="block-title"><h3>${b.name}</h3><span>${b.span}</span></div>
+    ${b.ids.map(i=>{const m=MODS[i];return `
+     <details class="mod${done[i]?" done":""}" id="m${i}">
+      <summary><span class="num">${i}</span>
+       <span class="sum-text"><h3>${esc(m.title)}${m.ai?'<span class="ai-mark">ИИ</span>':""}</h3><span class="meta">${m.weeks.includes("–")?"Дни":"День"} ${m.weeks} · ${m.time}</span></span>${chev}</summary>
+      <div class="body">
+       <p class="why">${esc(m.why)}</p>
+       <ol>${m.topics.map(x=>`<li>${esc(x)}</li>`).join("")}</ol>
+       <div class="cols">
+        <div class="box practice"><b>Практика</b><p>${esc(m.practice)}</p></div>
+        <div class="box"><b>Материалы</b><ul>${m.mats.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+       </div>
+       <label class="done-toggle"><input type="checkbox" id="chk-${i}" data-id="${i}" ${done[i]?"checked":""}> Модуль пройден</label>
+      </div></details>`}).join("")}</div>`).join("")}
+  </section>`;
+  document.querySelectorAll("input[data-id]").forEach(cb=>cb.addEventListener("change",e=>{
+    const id=e.target.dataset.id; if(e.target.checked)done[id]=1; else delete done[id];
+    save(); document.getElementById("m"+id).classList.toggle("done",e.target.checked); updateProgress();
+  }));
+  document.getElementById("plan-rows").innerHTML=Object.entries(MODS).map(([i,m])=>
+    `<tr><td>${m.weeks}</td><td>${i}. ${esc(m.title)}</td><td>${esc(m.result)}</td></tr>`).join("");
+}
+function updateProgress(){
+  const n=Object.keys(MODS).filter(i=>done[i]).length;
+  document.getElementById("pbar").style.width=(n/TOTAL*100)+"%";
+  document.getElementById("ptext").textContent=`Пройдено ${n} из ${TOTAL} модулей`;
+}
+function show(f){
+  document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-pressed",b.dataset.f===f));
+  document.querySelectorAll("section.part").forEach(s=>{s.hidden=s.dataset.sec!==f});
+}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>show(b.dataset.f)));
+render(); updateProgress();
+</script>
+
+</body>
+</html>
