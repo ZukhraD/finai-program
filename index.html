@@ -8,210 +8,461 @@
 <meta name="description" content="Программа обучения: финансовый анализ юрлиц РК и применение ИИ">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Roboto:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap">
 <style>
-/* Layout: учебный план — шапка с итогом, логика порядка, 4 блока модулей с раскрывающимися карточками, график, библиотека материалов; прогресс хранится у зрителя */
+/* Layout: мягкий лендинг-учебник — двухпанельный hero (коллаж ИИ-диалога + заголовок с пилюлями), 4 карточки блоков, шаги дня, модули-аккордеоны, итоги на светло-зелёном, график и материалы */
 :root{
-  --bg:#FFFFFF; --surface:#F6F6F4; --line:#E5E4E2; --fg:#272727; --muted:#5E5F63;
-  --blue:#023DFF; --blue-soft:#E8EEFF; --lime:#00BB00; --lime-soft:#E3F7E3; --on-accent:#FFFFFF;
+  --bg:#FFFFFF; --sky:#E6ECFF; --sky-2:#D3DDFF; --mint:#EEF8E6; --mint-2:#DDF1CF;
+  --card:#FFFFFF; --line:#E5E4E2; --fg:#272727; --muted:#62646B;
+  --blue:#023DFF; --blue-soft:#DCE4FF; --lime:#00BB00; --lime-ink:#178A17; --lime-soft:#DDF4D8;
+  --on-blue:#FFFFFF; --shadow:0 10px 30px rgba(2,30,120,.08);
   --f-display:"Jost","Futura PT",Futura,"Century Gothic",sans-serif;
   --f-body:"Roboto",Verdana,system-ui,sans-serif;
   --f-sys:Verdana,Geneva,sans-serif;
+  --r-xl:28px; --r-l:20px; --r-m:14px;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#17181B; --surface:#202227; --line:#33353B; --fg:#ECEBE8; --muted:#A3A4A9;
-  --blue:#5C82FF; --blue-soft:#1C2645; --lime:#33CC33; --lime-soft:#17301A; --on-accent:#0E0F12; color-scheme:dark}}
+  --bg:#12141A; --sky:#18203A; --sky-2:#212C52; --mint:#16231A; --mint-2:#1E3323;
+  --card:#1C1F27; --line:#2E323C; --fg:#ECEBE8; --muted:#A4A7AF;
+  --blue:#6B8DFF; --blue-soft:#25305A; --lime:#3ACC3A; --lime-ink:#5ED65E; --lime-soft:#1D3A21;
+  --on-blue:#0E1220; --shadow:0 10px 30px rgba(0,0,0,.35); color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#17181B; --surface:#202227; --line:#33353B; --fg:#ECEBE8; --muted:#A3A4A9;
-  --blue:#5C82FF; --blue-soft:#1C2645; --lime:#33CC33; --lime-soft:#17301A; --on-accent:#0E0F12; color-scheme:dark}
+  --bg:#12141A; --sky:#18203A; --sky-2:#212C52; --mint:#16231A; --mint-2:#1E3323;
+  --card:#1C1F27; --line:#2E323C; --fg:#ECEBE8; --muted:#A4A7AF;
+  --blue:#6B8DFF; --blue-soft:#25305A; --lime:#3ACC3A; --lime-ink:#5ED65E; --lime-soft:#1D3A21;
+  --on-blue:#0E1220; --shadow:0 10px 30px rgba(0,0,0,.35); color-scheme:dark}
 
 *{box-sizing:border-box}
+html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--fg);font:16px/1.55 var(--f-body);
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.wrap{max-width:1040px;margin:0 auto}
-h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
-a{color:var(--blue)}
-:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:28px;padding-block:16px 40px}
+h1,h2,h3{font-family:var(--f-display);font-weight:500;margin:0;line-height:1.12;text-wrap:balance}
+a{color:var(--blue);text-decoration:none}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:8px}
+.ico{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 
-header{padding-block:40px 28px;border-bottom:1px solid var(--line);display:grid;gap:20px}
-.eyebrow{font:500 12px/1 var(--f-sys);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-h1{font-size:clamp(32px,6vw,54px);font-weight:600;letter-spacing:-.01em}
-h1 span{color:var(--blue)}
-.lead{max-width:62ch;color:var(--muted);margin:0;font-size:17px}
-.facts{display:flex;flex-wrap:wrap;gap:10px 28px;font-variant-numeric:tabular-nums}
-.facts div{display:grid}
-.facts b{font:600 26px/1.1 var(--f-display)}
-.facts small{color:var(--muted);font-size:13px}
-.progress{display:grid;gap:6px;max-width:420px}
-.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
-.bar i{display:block;height:100%;width:0;background:var(--lime);transition:width .3s}
-.progress small{color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:8px;font:500 15px var(--f-body);padding:12px 20px;border-radius:999px;border:1px solid transparent;cursor:pointer;transition:transform .15s, box-shadow .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{background:var(--blue);color:var(--on-blue);box-shadow:0 8px 20px rgba(2,61,255,.25)}
+.btn-ghost{background:transparent;color:var(--fg);padding-inline:8px}
+.btn-line{background:var(--card);color:var(--fg);border-color:var(--line);padding:9px 16px;font-size:14px}
+.round{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--card);color:var(--fg);flex:none}
 
-nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;gap:8px;flex-wrap:wrap;padding-block:14px;border-bottom:1px solid var(--line)}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
-.tab{font:500 14px var(--f-body);border:1px solid var(--line);background:var(--bg);color:var(--fg);padding:8px 14px;border-radius:999px;cursor:pointer}
-.tab[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+/* top bar */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font:600 17px var(--f-display);color:var(--fg)}
+.logo-mark{width:34px;height:34px;border-radius:10px;background:var(--blue);display:grid;place-items:center}
+.logo-mark svg{width:20px;height:20px;stroke:var(--on-blue)}
+.nav{display:flex;gap:6px;flex-wrap:wrap}
+.nav a{font-size:14px;color:var(--fg);padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.nav a:hover{border-color:var(--blue);color:var(--blue)}
 
-section.part{padding-block:36px 8px;display:grid;gap:18px}
-.part-head{display:grid;gap:6px}
-.part-head h2{font-size:clamp(24px,4vw,32px);font-weight:600}
-.part-head p{margin:0;color:var(--muted);max-width:68ch}
+/* hero */
+.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:14px;background:linear-gradient(135deg,var(--sky) 0%,var(--sky-2) 55%,var(--mint-2) 130%);border-radius:var(--r-xl);padding:14px}
+.collage{position:relative;min-height:640px;border-radius:var(--r-l);overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(2px)}
+.blob.b1{width:340px;height:340px;right:-80px;bottom:-90px;background:radial-gradient(circle at 30% 30%,var(--mint-2),transparent 70%)}
+.blob.b2{width:260px;height:260px;left:-60px;top:-60px;background:radial-gradient(circle,rgba(255,255,255,.7),transparent 70%)}
+.chip-card{position:absolute;background:var(--card);border-radius:var(--r-m);box-shadow:var(--shadow);padding:12px 14px;font-size:13px;line-height:1.4}
+.chip-card time{display:block;text-align:right;font:11px var(--f-sys);color:var(--muted);margin-top:4px}
+.q1{top:22px;left:20px;max-width:250px}
+.a1{top:118px;left:60px;max-width:290px;display:flex;gap:10px}
+.ai-ava{width:30px;height:30px;border-radius:50%;background:var(--lime);display:grid;place-items:center;flex:none;font:600 11px var(--f-sys);color:#fff}
+.tag-warn{display:inline-block;margin-top:6px;font:500 11px var(--f-sys);padding:3px 8px;border-radius:999px;background:#FFF1D6;color:#8A5A00}
+.chart-card{top:380px;left:20px;width:240px}
+.chart-card b{font:500 13px var(--f-body)}
+.chart-card small{color:var(--muted);font-size:11px}
+.bars{display:flex;align-items:flex-end;gap:10px;height:86px;margin-top:10px}
+.bars span{flex:1;border-radius:8px 8px 4px 4px;background:var(--blue-soft);position:relative}
+.bars span.hi{background:var(--blue)}
+.bars span::after{content:attr(data-y);position:absolute;bottom:-18px;left:0;right:0;text-align:center;font:10px var(--f-sys);color:var(--muted)}
+.chart-card .bars{margin-bottom:16px}
+.dscr{right:22px;top:236px;width:210px;display:grid;gap:6px}
+.dscr .big{font:500 34px/1 var(--f-display);font-variant-numeric:tabular-nums}
+.meter{height:8px;border-radius:4px;background:var(--line);position:relative}
+.meter i{position:absolute;inset:0 auto 0 0;width:72%;border-radius:4px;background:linear-gradient(90deg,var(--blue),var(--lime))}
+.meter::after{content:"";position:absolute;left:50%;top:-4px;width:2px;height:16px;background:var(--fg);opacity:.4}
+.dscr small{color:var(--muted);font-size:11px}
+.checks{left:20px;bottom:22px;right:22px;display:flex;flex-wrap:wrap;gap:6px;background:transparent;box-shadow:none;padding:0}
+.ok{display:inline-flex;align-items:center;gap:6px;background:var(--card);border-radius:999px;padding:7px 12px;font-size:12px;box-shadow:var(--shadow)}
+.ok .ico{width:14px;height:14px;color:var(--lime);stroke-width:2.4}
+.react{position:absolute;right:22px;top:40px;background:var(--card);border-radius:999px;padding:6px 12px;font:12px var(--f-sys);box-shadow:var(--shadow);display:flex;gap:8px;align-items:center}
 
-.logic{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-.step{border-top:3px solid var(--blue);padding-top:12px;display:grid;gap:6px;min-width:0}
-.step.ai{border-top-color:var(--lime)}
-.step .eyebrow{color:var(--blue)} .step.ai .eyebrow{color:var(--lime)}
-.step h3{font-size:18px}
-.step p{margin:0;font-size:14px;color:var(--muted)}
+.hero-copy{background:var(--card);border-radius:var(--r-l);padding:clamp(22px,3.4vw,40px);display:grid;gap:22px;align-content:space-between}
+.pills{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.pill-word{font:500 clamp(28px,4.2vw,46px)/1 var(--f-display);padding:10px 20px;border-radius:999px;border:1.5px solid var(--line);letter-spacing:-.01em}
+.pill-word.solid{background:var(--blue-soft);border-color:var(--blue-soft);color:var(--fg);display:inline-flex;align-items:center;gap:12px}
+.pill-word.solid .arr{width:40px;height:40px;border-radius:50%;background:var(--blue);display:grid;place-items:center}
+.pill-word.solid .arr svg{stroke:var(--on-blue)}
+.pill-word.plain{border-color:transparent;padding-inline:4px}
+.hero-copy .sub{font-size:17px;margin:0;max-width:44ch}
+.hero-copy ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:14px;color:var(--muted)}
+.hero-copy li{display:flex;gap:8px;align-items:center}
+.hero-copy li .ico{width:16px;height:16px;color:var(--fg)}
+.cta{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.prog-row{display:flex;gap:14px;align-items:center;border-top:1px solid var(--line);padding-top:18px}
+.ring{width:52px;height:52px;flex:none}
+.ring circle{fill:none;stroke-width:6}
+.ring .bg{stroke:var(--line)} .ring .fg{stroke:var(--lime);stroke-linecap:round;transition:stroke-dashoffset .4s}
+.prog-row b{display:block;font:500 15px var(--f-body)}
+.prog-row small{color:var(--muted);font-size:13px}
 
-.block{display:grid;gap:10px}
-.block-title{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;padding-top:8px}
-.block-title h3{font-size:20px}
-.block-title span{font-size:14px;color:var(--muted)}
+/* section heads */
+.sec{display:grid;gap:22px;padding-block:24px 4px;scroll-margin-top:16px}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.sec-head h2{font-size:clamp(24px,3.4vw,34px);max-width:24ch}
+.hl{background:var(--blue-soft);border-radius:10px;padding:0 8px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.hl.g{background:var(--lime-soft)}
+.sec-head p{margin:6px 0 0;color:var(--muted);max-width:60ch}
 
-details.mod{border:1px solid var(--line);border-radius:10px;background:var(--bg)}
-details.mod[open]{background:var(--surface)}
-details.mod.done summary h3{color:var(--muted)}
-summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:14px 16px}
+/* block cards */
+.blocks{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.bcard{position:relative;border-radius:var(--r-l);min-height:330px;padding:16px;display:grid;grid-template-rows:auto 1fr auto;overflow:hidden;color:var(--fg)}
+.bcard:nth-child(1){background:linear-gradient(160deg,var(--sky) 0%,var(--sky-2) 100%)}
+.bcard:nth-child(2){background:linear-gradient(160deg,var(--sky-2) 0%,var(--mint) 100%)}
+.bcard:nth-child(3){background:linear-gradient(160deg,var(--mint) 0%,var(--sky) 100%)}
+.bcard:nth-child(4){background:linear-gradient(160deg,var(--mint-2) 0%,var(--sky-2) 100%)}
+.bcard-top{display:flex;justify-content:space-between;align-items:center;gap:8px;position:relative;z-index:1}
+.btag{font:500 11px var(--f-sys);letter-spacing:.03em;background:var(--card);padding:7px 12px;border-radius:999px}
+.bart{width:100%;height:100%;min-height:150px}
+.bcard h3{font-size:22px;position:relative;z-index:1}
+.bcard h3 span{color:var(--blue)}
+.bcard p{margin:6px 0 12px;font-size:13px;color:var(--muted);position:relative;z-index:1}
+.bcard .btn-line{justify-self:start;position:relative;z-index:1}
+.bcard:hover .round{background:var(--blue);color:var(--on-blue)}
+
+/* steps */
+.steps{background:var(--sky);border-radius:var(--r-xl);padding:clamp(20px,3vw,32px);display:grid;gap:22px}
+.steps-row{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;position:relative}
+.step{display:grid;gap:8px;position:relative;min-width:0}
+.step-ico{width:52px;height:52px;border-radius:50%;background:var(--card);display:grid;place-items:center;color:var(--blue);box-shadow:var(--shadow);position:relative;z-index:1}
+.step-ico .ico{width:22px;height:22px}
+.step:not(:last-child)::after{content:"";position:absolute;top:26px;left:64px;right:-8px;border-top:2px dashed var(--sky-2)}
+.step:not(:last-child)::before{content:"";position:absolute;top:22px;left:calc(50% + 30px);width:10px;height:10px;border-radius:50%;background:var(--lime);z-index:1}
+.step .n{font:500 12px var(--f-sys);color:var(--muted)}
+.step b{font:500 16px var(--f-display)}
+.step p{margin:0;font-size:13px;color:var(--muted)}
+
+/* modules */
+.mblock{display:grid;gap:10px}
+.mblock-title{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;padding-top:10px;scroll-margin-top:16px}
+.mblock-title h3{font-size:22px}
+.mblock-title span{font-size:14px;color:var(--muted)}
+details.mod{border-radius:var(--r-l);background:var(--card);border:1px solid var(--line);transition:background .2s}
+details.mod[open]{background:linear-gradient(180deg,var(--sky) 0,var(--card) 140px);border-color:var(--sky-2)}
+summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;padding:16px 18px}
 summary::-webkit-details-marker{display:none}
-.num{font:600 16px/1 var(--f-display);width:44px;height:44px;border-radius:8px;display:grid;place-items:center;font-variant-numeric:tabular-nums;background:var(--blue-soft);color:var(--blue)}
-.mod.done .num{background:var(--lime);color:var(--on-accent)}
-.sum-text{min-width:0;display:grid;gap:3px}
-.sum-text h3{font-size:18px;font-weight:600}
-.meta{font-size:13px;color:var(--muted)}
-.ai-mark{display:inline-block;font:500 11px/1 var(--f-sys);letter-spacing:.05em;padding:3px 6px;border-radius:4px;background:var(--lime-soft);color:var(--lime);margin-left:6px;vertical-align:1px}
-.chev{width:20px;height:20px;transition:transform .2s;color:var(--muted)}
-details[open] .chev{transform:rotate(180deg)}
-.body{padding:0 16px 18px 74px;display:grid;gap:16px}
-.why{margin:0;color:var(--muted);font-size:15px;max-width:70ch}
-.body ol,.body ul{margin:0;padding-left:20px;display:grid;gap:4px}
-.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
-.box{padding:12px 14px;background:var(--bg);border:1px solid var(--line);border-radius:8px;min-width:0}
-.box.practice{border-left:3px solid var(--blue)}
-.box b{font:600 12px/1 var(--f-sys);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:8px;color:var(--muted)}
+.num{font:500 18px/1 var(--f-display);width:50px;height:50px;border-radius:16px;display:grid;place-items:center;background:var(--blue-soft);color:var(--blue);font-variant-numeric:tabular-nums}
+.mod.done .num{background:var(--lime);color:#fff}
+.sum-text{min-width:0;display:grid;gap:4px}
+.sum-text h3{font-size:19px}
+.meta{font-size:13px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ai-mark{font:500 11px/1 var(--f-sys);padding:4px 8px;border-radius:999px;background:var(--lime-soft);color:var(--lime-ink)}
+.done-mark{font:500 11px/1 var(--f-sys);padding:4px 8px;border-radius:999px;background:var(--lime);color:#fff}
+.mod:not(.done) .done-mark{display:none}
+summary .round{border:1px solid var(--line);transition:transform .2s}
+details[open] summary .round{transform:rotate(45deg);background:var(--blue);color:var(--on-blue);border-color:var(--blue)}
+.body{padding:0 18px 20px 84px;display:grid;gap:16px}
+.why{margin:0;font-size:15px;max-width:70ch}
+.body ol{margin:0;padding-left:20px;display:grid;gap:5px}
+.body ol li::marker{color:var(--blue);font-weight:500}
+.cols{display:grid;grid-template-columns:1.3fr 1fr;gap:12px}
+.box{padding:14px 16px;border-radius:var(--r-m);min-width:0}
+.box.practice{background:var(--blue-soft)}
+.box.mats{background:var(--mint)}
+.box b{font:500 11px/1 var(--f-sys);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:8px;color:var(--muted)}
 .box p{margin:0}
-.box ul{font-size:14px}
-.done-toggle{display:inline-flex;gap:8px;align-items:center;font-size:14px;cursor:pointer;justify-self:start}
-.done-toggle input{width:18px;height:18px;accent-color:var(--lime)}
+.box ul{margin:0;padding-left:18px;display:grid;gap:3px;font-size:14px}
+.done-toggle{display:inline-flex;gap:10px;align-items:center;font-size:14px;cursor:pointer;justify-self:start;background:var(--card);border:1px solid var(--line);padding:8px 14px;border-radius:999px}
+.done-toggle input{width:18px;height:18px;accent-color:var(--lime);margin:0}
 
+/* outcome */
+.outcome{background:var(--mint);border-radius:var(--r-xl);padding:clamp(20px,3vw,32px);display:grid;grid-template-columns:1fr 2fr;gap:20px;align-items:start}
+.outcome h2{font-size:clamp(24px,3.2vw,32px)}
+.outcome p{color:var(--muted);margin:10px 0 18px;font-size:15px}
+.btn-lime{background:var(--lime);color:#fff}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat{background:var(--card);border-radius:var(--r-l);padding:16px;display:grid;gap:10px;align-content:start;min-width:0}
+.stat .s-ico{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--lime);color:#fff}
+.stat:nth-child(2) .s-ico,.stat:nth-child(4) .s-ico{background:var(--blue);color:var(--on-blue)}
+.stat b{font:500 26px/1 var(--f-display);font-variant-numeric:tabular-nums}
+.stat small{color:var(--muted);font-size:13px;line-height:1.35}
+.rule{grid-column:1/-1;background:var(--card);border-radius:var(--r-l);padding:16px 18px;display:flex;gap:14px;align-items:flex-start}
+.rule .s-ico{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--lime-soft);color:var(--lime-ink);flex:none}
+.rule p{margin:0;font-size:14px;color:var(--fg)}
+.rule p+p{margin-top:4px;color:var(--muted)}
+
+/* plan */
+.tbl{overflow-x:auto;border-radius:var(--r-l);background:var(--card);border:1px solid var(--line)}
 table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
-.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
-th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font:500 12px var(--f-sys);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);background:var(--surface)}
+th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 11px var(--f-sys);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--sky)}
 tr:last-child td{border-bottom:0}
+td .day{display:inline-grid;place-items:center;min-width:44px;height:28px;padding:0 8px;border-radius:999px;background:var(--blue-soft);color:var(--blue);font-weight:500;font-size:13px}
 
-.lib{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
-.lib-group{border:1px solid var(--line);border-radius:10px;padding:16px;display:grid;gap:10px;align-content:start;min-width:0}
-.lib-group h3{font-size:17px}
-.lib-group ul{margin:0;padding-left:18px;display:grid;gap:8px;font-size:14px}
-.lib-group li small{display:block;color:var(--muted)}
-.rule{border:1px solid var(--line);border-left:3px solid var(--lime);border-radius:8px;padding:12px 14px;max-width:760px;display:grid;gap:6px}
-.rule b{font:600 12px/1 var(--f-sys);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.rule p{margin:0}
-.note{font-size:14px;color:var(--muted);max-width:70ch;margin:0}
-footer{padding-block:32px 48px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:36px}
+/* library */
+.lib{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.lib-group{background:var(--card);border:1px solid var(--line);border-radius:var(--r-l);padding:18px;display:grid;gap:12px;align-content:start;min-width:0}
+.lib-head{display:flex;gap:10px;align-items:center}
+.lib-head .s-ico{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:var(--blue-soft);color:var(--blue)}
+.lib-group:nth-child(even) .s-ico{background:var(--lime-soft);color:var(--lime-ink)}
+.lib-group h3{font-size:18px}
+.lib-group ul{margin:0;padding:0;list-style:none;display:grid;gap:10px;font-size:14px}
+.lib-group li small{display:block;color:var(--muted);font-size:12px}
+.note{font-size:14px;color:var(--muted);margin:0;max-width:72ch}
+footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:20px}
 
-@media (max-width:560px){
-  .body{padding-left:16px}
-  summary{grid-template-columns:auto 1fr}
-  .chev{display:none}
+@media (max-width:980px){
+  .hero{grid-template-columns:1fr}
+  .hero-copy{order:-1}
+  .collage{min-height:600px}
+  .blocks{grid-template-columns:repeat(2,1fr)}
+  .outcome{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .steps-row{grid-template-columns:repeat(2,1fr)}
+  .step::after,.step::before{display:none}
 }
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:620px){
+  .collage{min-height:0;display:flex;flex-direction:column;gap:10px;padding:14px}
+  .chip-card,.react{position:static;max-width:none;width:auto}
+  .a1{margin-left:24px}
+  .blob{display:none}
+  .blocks{grid-template-columns:1fr}
+  .bcard{min-height:280px}
+  .steps-row{grid-template-columns:1fr}
+  .cols{grid-template-columns:1fr}
+  .body{padding-left:18px}
+  summary{grid-template-columns:auto 1fr}
+  summary .round{display:none}
+  .stats{grid-template-columns:1fr 1fr}
+  .nav{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
 </style>
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-ne" viewBox="0 0 24 24"><path d="M7 17L17 7M8 7h9v9"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/></symbol>
+    <symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 4v16M5 20h14M6 8h12M6 8l-3 6a3 3 0 006 0L6 8zM18 8l-3 6a3 3 0 006 0l-3-6z"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2V5zM4 19a2 2 0 012-2h13"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3zM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8L19 16z"/></symbol>
+    <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3L5 14h6l-1 7 8-11h-6l1-7z"/></symbol>
+    <symbol id="i-law" viewBox="0 0 24 24"><path d="M4 9l8-5 8 5M5 9v9M19 9v9M9.5 9v9M14.5 9v9M3 20h18"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.6 2.5 14.4 0 17M12 3.5c-2.5 2.6-2.5 14.4 0 17"/></symbol>
+    <symbol id="i-data" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="2.5"/><path d="M5 6v6c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5V6M5 12v6c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-6"/></symbol>
+    <symbol id="i-chip" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="3"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></symbol>
+  </defs>
+</svg>
+
 <div class="wrap">
-<header>
-  <div class="eyebrow">Программа обучения · самостоятельный курс</div>
-  <h1>Финансовый анализ <span>+ ИИ</span></h1>
-  <p class="lead">Комплексный анализ юрлица РК от исходных форм до заключения для банка и собственника. ИИ подключается со второго дня как помощник и к концу курса берёт на себя рутину.</p>
-  <div class="facts">
-    <div><b>10</b><small>модулей</small></div>
-    <div><b>12</b><small>рабочих дней</small></div>
-    <div><b>3–4 ч</b><small>в день</small></div>
-    <div><b>РК</b><small>формы №404 и МСБ</small></div>
-  </div>
-  <div class="progress" aria-live="polite">
-    <div class="bar"><i id="pbar"></i></div>
-    <small id="ptext">Пройдено 0 из 10 модулей</small>
-  </div>
-</header>
 
-<nav class="tabs" aria-label="Разделы">
-  <button class="tab" data-f="program" aria-pressed="true" id="tab-program">Программа</button>
-  <button class="tab" data-f="plan" aria-pressed="false" id="tab-plan">График</button>
-  <button class="tab" data-f="lib" aria-pressed="false" id="tab-lib">Материалы</button>
-</nav>
+<div class="top">
+  <a class="logo" href="#top" id="top">
+    <span class="logo-mark"><svg class="ico" viewBox="0 0 24 24"><path d="M4 18l5-6 4 3 7-9"/><path d="M15 6h5v5"/></svg></span>
+    Финанализ + ИИ
+  </a>
+  <nav class="nav" aria-label="Разделы">
+    <a href="#blocks">Программа</a>
+    <a href="#modules">Модули</a>
+    <a href="#plan">График</a>
+    <a href="#lib">Материалы</a>
+  </nav>
+</div>
 
-<section class="part" data-sec="program" id="logic">
-  <div class="part-head">
-    <span class="eyebrow">Почему такой порядок</span>
-    <h2>От данных к выводу</h2>
-    <p>Каждый блок опирается на предыдущий: нельзя считать коэффициенты, не понимая отчётов, и нельзя доверить ИИ расчёт, который не умеешь проверить сам.</p>
+<section class="hero" aria-label="О курсе">
+  <div class="collage" aria-hidden="true">
+    <span class="blob b1"></span><span class="blob b2"></span>
+    <div class="chip-card q1">Сверь выручку ОПиУ с ФНО 100.00 за 2025 год, суммы обезличены<time>10:42</time></div>
+    <div class="chip-card a1"><span class="ai-ava">ИИ</span><div>Расхождение 2,4%: выручка в отчёте выше декларации. Проверьте строку 010 и обороты по выпискам.<br><span class="tag-warn">требует проверки</span><time>10:42</time></div></div>
+    <div class="react">✓ сверено · 3 источника</div>
+    <div class="chip-card chart-card"><b>Выручка, млн ₸</b><br><small>компания-образец</small>
+      <div class="bars"><span style="height:48%" data-y="2023"></span><span style="height:66%" data-y="2024"></span><span class="hi" style="height:92%" data-y="2025"></span></div>
+    </div>
+    <div class="chip-card dscr"><small>DSCR, базовый сценарий</small><span class="big">1,42</span><div class="meter"><i></i></div><small>Норма банка ≥ 1,25</small></div>
+    <div class="chip-card checks">
+      <span class="ok"><svg class="ico"><use href="#i-check"/></svg>Баланс сходится</span>
+      <span class="ok"><svg class="ico"><use href="#i-check"/></svg>ДДС ↔ выписки</span>
+      <span class="ok"><svg class="ico"><use href="#i-check"/></svg>Кредиты ↔ ПКБ</span>
+    </div>
   </div>
-  <div class="logic">
-    <div class="step"><span class="eyebrow">Модули 1–2</span><h3>Фундамент</h3><p>Какие данные есть у аналитика в РК и как безопасно работать с ИИ. Дальше ИИ помогает в каждом модуле.</p></div>
-    <div class="step"><span class="eyebrow">Модули 3–5</span><h3>Три отчёта</h3><p>Баланс, ОПиУ, ДДС: составить с нуля, сверить с декларациями и выписками.</p></div>
-    <div class="step"><span class="eyebrow">Модули 6–8</span><h3>Анализ и прогноз</h3><p>Коэффициенты и признаки манипуляций, группа компаний, финмодель и прогноз ДДС.</p></div>
-    <div class="step ai"><span class="eyebrow">Модули 9–10</span><h3>Результат и автоматизация</h3><p>Заключение для трёх читателей, итоговый проект и локальный конвейер.</p></div>
+
+  <div class="hero-copy">
+    <div class="pills">
+      <span class="pill-word">Анализируем.</span>
+      <span class="pill-word solid">Прогнозируем. <span class="arr"><svg class="ico"><use href="#i-arrow"/></svg></span></span>
+      <span class="pill-word">Автоматизируем.</span>
+      <span class="pill-word plain">С&nbsp;ИИ.</span>
+    </div>
+    <div style="display:grid;gap:14px">
+      <p class="sub">Интенсив по комплексному финансовому анализу юрлиц РК: от формы №404 до заключения для банка и собственника.</p>
+      <ul>
+        <li><svg class="ico"><use href="#i-down"/></svg>10 модулей, один в день, 3–4 часа</li>
+        <li><svg class="ico"><use href="#i-up"/></svg>Цель: анализ клиента вдвое быстрее</li>
+      </ul>
+    </div>
+    <div class="cta">
+      <a class="btn btn-primary" href="#m1" data-open="1" id="cta-start">Начать день 1 <svg class="ico"><use href="#i-arrow"/></svg></a>
+      <a class="btn btn-ghost" href="#plan">Смотреть график <svg class="ico"><use href="#i-arrow"/></svg></a>
+    </div>
+    <div class="prog-row" aria-live="polite">
+      <svg class="ring" viewBox="0 0 52 52"><circle class="bg" cx="26" cy="26" r="22"/><circle class="fg" id="ring" cx="26" cy="26" r="22" stroke-dasharray="138.2" stroke-dashoffset="138.2" transform="rotate(-90 26 26)"/></svg>
+      <div><b id="ptext">Пройдено 0 из 10 модулей</b><small id="pnext">Следующий: модуль 1</small></div>
+    </div>
   </div>
-  <div class="rule"><b>Правило ускорения</b><p>Начинайте каждый модуль с практики. Если сделали её верно меньше чем за час, теорию пропустите и переходите к следующему модулю. Знакомые темы — баланс, ОПиУ, ДДС — так займут час-полтора вместо трёх.</p><p>Если день сорвался, не проходите два модуля за раз: сдвиньте график на день.</p></div>
 </section>
 
-<div id="main"></div>
-
-<section class="part" data-sec="plan" id="plan" hidden>
-  <div class="part-head">
-    <span class="eyebrow">График</span>
-    <h2>12 рабочих дней, по 3–4 часа</h2>
-    <p>Один модуль в день. Модули 7 и 8 в один день не помещаются: в каждом 7–8 часов практики, поэтому на них по два дня. Засеките время полного анализа одного клиента в день 1 и в день 12: цель — вдвое быстрее при том же качестве.</p>
+<section class="sec" id="blocks">
+  <div class="sec-head">
+    <div><h2>Четыре блока: от <span class="hl">данных</span> к <span class="hl g">выводу</span></h2>
+    <p>Каждый блок опирается на предыдущий: нельзя считать коэффициенты, не понимая отчётов, и нельзя доверить ИИ расчёт, который не умеешь проверить сам.</p></div>
+    <a class="btn btn-line" href="#modules">Все модули <svg class="ico"><use href="#i-arrow"/></svg></a>
   </div>
+  <div class="blocks">
+    <a class="bcard" href="#b1">
+      <div class="bcard-top"><span class="btag">дни 1–2</span><span class="round"><svg class="ico"><use href="#i-ne"/></svg></span></div>
+      <svg class="bart" viewBox="0 0 200 150" aria-hidden="true">
+        <rect x="40" y="30" width="90" height="110" rx="12" fill="var(--card)" opacity=".55"/>
+        <rect x="60" y="18" width="90" height="110" rx="12" fill="var(--card)"/>
+        <rect x="74" y="36" width="50" height="6" rx="3" fill="var(--blue)"/>
+        <rect x="74" y="52" width="62" height="5" rx="2.5" fill="var(--sky-2)"/>
+        <rect x="74" y="64" width="40" height="5" rx="2.5" fill="var(--sky-2)"/>
+        <rect x="74" y="76" width="56" height="5" rx="2.5" fill="var(--sky-2)"/>
+        <circle cx="148" cy="112" r="22" fill="var(--lime)"/>
+        <path d="M138 112l7 7 13-14" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div><h3><span>01/</span> Фундамент</h3><p>Данные аналитика в РК и безопасная работа с ИИ</p><span class="btn btn-line">Подробнее <svg class="ico"><use href="#i-arrow"/></svg></span></div>
+    </a>
+    <a class="bcard" href="#b2">
+      <div class="bcard-top"><span class="btag">дни 3–5</span><span class="round"><svg class="ico"><use href="#i-ne"/></svg></span></div>
+      <svg class="bart" viewBox="0 0 200 150" aria-hidden="true">
+        <rect x="22" y="40" width="48" height="84" rx="10" fill="var(--card)"/>
+        <rect x="76" y="22" width="48" height="102" rx="10" fill="var(--card)"/>
+        <rect x="130" y="52" width="48" height="72" rx="10" fill="var(--card)"/>
+        <text x="46" y="88" text-anchor="middle" font-family="Jost,sans-serif" font-size="13" fill="var(--blue)">Баланс</text>
+        <text x="100" y="78" text-anchor="middle" font-family="Jost,sans-serif" font-size="13" fill="var(--blue)">ОПиУ</text>
+        <text x="154" y="94" text-anchor="middle" font-family="Jost,sans-serif" font-size="13" fill="var(--blue)">ДДС</text>
+        <path d="M70 70h6M124 80h6" stroke="var(--lime)" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <div><h3><span>02/</span> Три отчёта</h3><p>Баланс, ОПиУ, ДДС: с нуля и со сверкой с налогами</p><span class="btn btn-line">Подробнее <svg class="ico"><use href="#i-arrow"/></svg></span></div>
+    </a>
+    <a class="bcard" href="#b3">
+      <div class="bcard-top"><span class="btag">дни 6–10</span><span class="round"><svg class="ico"><use href="#i-ne"/></svg></span></div>
+      <svg class="bart" viewBox="0 0 200 150" aria-hidden="true">
+        <rect x="20" y="20" width="160" height="110" rx="14" fill="var(--card)"/>
+        <path d="M36 104h128" stroke="var(--line)" stroke-width="1.5"/>
+        <path d="M36 98 L64 84 L92 90 L120 62 L148 50" stroke="var(--blue)" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M120 62 L148 74" stroke="var(--lime)" stroke-width="3" stroke-dasharray="5 5" fill="none" stroke-linecap="round"/>
+        <circle cx="148" cy="50" r="5" fill="var(--blue)"/><circle cx="148" cy="74" r="5" fill="var(--lime)"/>
+        <text x="40" y="44" font-family="Jost,sans-serif" font-size="12" fill="var(--muted)">базовый / стресс</text>
+      </svg>
+      <div><h3><span>03/</span> Анализ и прогноз</h3><p>Коэффициенты, группа компаний, финмодель на 24 месяца</p><span class="btn btn-line">Подробнее <svg class="ico"><use href="#i-arrow"/></svg></span></div>
+    </a>
+    <a class="bcard" href="#b4">
+      <div class="bcard-top"><span class="btag">дни 11–12</span><span class="round"><svg class="ico"><use href="#i-ne"/></svg></span></div>
+      <svg class="bart" viewBox="0 0 200 150" aria-hidden="true">
+        <rect x="16" y="56" width="44" height="38" rx="10" fill="var(--card)"/>
+        <rect x="78" y="56" width="44" height="38" rx="10" fill="var(--blue)"/>
+        <rect x="140" y="56" width="44" height="38" rx="10" fill="var(--card)"/>
+        <path d="M60 75h18M122 75h18" stroke="var(--fg)" stroke-width="2" opacity=".35"/>
+        <text x="38" y="80" text-anchor="middle" font-family="Jost,sans-serif" font-size="12" fill="var(--fg)">.xlsm</text>
+        <text x="100" y="80" text-anchor="middle" font-family="Jost,sans-serif" font-size="12" fill="var(--on-blue)">ИИ</text>
+        <text x="162" y="80" text-anchor="middle" font-family="Jost,sans-serif" font-size="12" fill="var(--fg)">.docx</text>
+        <circle cx="100" cy="30" r="12" fill="var(--lime)"/><path d="M95 30l4 4 7-8" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      </svg>
+      <div><h3><span>04/</span> Результат</h3><p>Заключение для трёх читателей и локальный конвейер</p><span class="btn btn-line">Подробнее <svg class="ico"><use href="#i-arrow"/></svg></span></div>
+    </a>
+  </div>
+</section>
+
+<section class="steps" aria-labelledby="steps-h">
+  <div class="sec-head"><div><h2 id="steps-h">Как проходит день</h2><p>Порядок одинаковый для каждого модуля. Практика идёт первой, поэтому знакомые темы занимают час-полтора.</p></div></div>
+  <div class="steps-row">
+    <div class="step"><span class="step-ico"><svg class="ico"><use href="#i-pen"/></svg></span><span class="n">01</span><b>Практика</b><p>Сразу делаете задание модуля на компании-образце.</p></div>
+    <div class="step"><span class="step-ico"><svg class="ico"><use href="#i-scale"/></svg></span><span class="n">02</span><b>Сверка</b><p>Проверяете результат по источникам и формулам-проверкам.</p></div>
+    <div class="step"><span class="step-ico"><svg class="ico"><use href="#i-book"/></svg></span><span class="n">03</span><b>Теория</b><p>Только если практика заняла больше часа или были ошибки.</p></div>
+    <div class="step"><span class="step-ico"><svg class="ico"><use href="#i-spark"/></svg></span><span class="n">04</span><b>ИИ-разбор</b><p>Просите ИИ оспорить вывод и найти противоречия.</p></div>
+    <div class="step"><span class="step-ico"><svg class="ico"><use href="#i-flag"/></svg></span><span class="n">05</span><b>Отметка</b><p>Отмечаете модуль пройденным и записываете время.</p></div>
+  </div>
+</section>
+
+<section class="sec" id="modules">
+  <div class="sec-head"><div><h2>10 модулей</h2><p>Откройте модуль: в нём темы, практика и материалы. Метка <span class="ai-mark">ИИ</span> стоит у модулей, где ИИ входит в основную работу.</p></div></div>
+  <div id="mlist"></div>
+</section>
+
+<section class="outcome" aria-labelledby="out-h">
+  <div>
+    <h2 id="out-h">Что будет в конце</h2>
+    <p>Рабочий процесс, в котором вы проверяете и подписываете, а рутину делают Excel, скрипты и локальная модель.</p>
+    <a class="btn btn-lime" href="#m1" data-open="1" id="cta-start-2">Начать день 1 <svg class="ico"><use href="#i-arrow"/></svg></a>
+  </div>
+  <div class="stats">
+    <div class="stat"><span class="s-ico"><svg class="ico"><use href="#i-grid"/></svg></span><b>10</b><small>модулей с практикой на компании-образце</small></div>
+    <div class="stat"><span class="s-ico"><svg class="ico"><use href="#i-cal"/></svg></span><b>12</b><small>рабочих дней интенсива</small></div>
+    <div class="stat"><span class="s-ico"><svg class="ico"><use href="#i-clock"/></svg></span><b>44 ч</b><small>общая нагрузка, 3–4 часа в день</small></div>
+    <div class="stat"><span class="s-ico"><svg class="ico"><use href="#i-bolt"/></svg></span><b>2×</b><small>цель по скорости полного анализа</small></div>
+    <div class="rule"><span class="s-ico"><svg class="ico"><use href="#i-bolt"/></svg></span><div><p><b>Правило ускорения.</b> Сделали практику верно меньше чем за час — теорию пропускайте и переходите дальше.</p><p>Если день сорвался, не проходите два модуля за раз: сдвиньте график на день.</p></div></div>
+  </div>
+</section>
+
+<section class="sec" id="plan">
+  <div class="sec-head"><div><h2>График: <span class="hl">12 рабочих дней</span></h2>
+  <p>Один модуль в день. Модули 7 и 8 занимают по два дня: в каждом 7–8 часов практики. Засеките время полного анализа одного клиента в день 1 и в день 12.</p></div></div>
   <div class="tbl"><table>
-    <thead><tr><th>День</th><th>Модуль</th><th>Результат</th></tr></thead>
+    <thead><tr><th>День</th><th>Модуль</th><th>Время</th><th>Результат</th></tr></thead>
     <tbody id="plan-rows"></tbody>
   </table></div>
 </section>
 
-<section class="part" data-sec="lib" id="lib" hidden>
-  <div class="part-head">
-    <span class="eyebrow">Материалы</span>
-    <h2>На чём учиться</h2>
-    <p>Нормативная база, книги, данные для практики и инструменты. В каждом модуле указано, что из этого нужно именно для него.</p>
-  </div>
+<section class="sec" id="lib">
+  <div class="sec-head"><div><h2>На чём <span class="hl g">учиться</span></h2><p>Нормативная база, книги, данные для практики и инструменты. В каждом модуле указано, что нужно именно для него.</p></div></div>
   <div class="lib">
     <div class="lib-group">
-      <h3>Нормативная база РК</h3>
+      <div class="lib-head"><span class="s-ico"><svg class="ico"><use href="#i-law"/></svg></span><h3>Нормативная база РК</h3></div>
       <ul>
-        <li><a href="https://adilet.zan.kz" target="_blank" rel="noopener">Әділет — база нормативных актов РК</a><small>Действующие редакции всех документов ниже</small></li>
+        <li><a href="https://adilet.zan.kz" target="_blank" rel="noopener">Әділет — база нормативных актов РК</a><small>Действующие редакции документов ниже</small></li>
         <li>Приказ Минфина РК №404<small>Перечень и формы финансовой отчётности, коды строк</small></li>
-        <li>НСФО для субъектов малого и среднего бизнеса<small>Форма МСБ и правила её составления</small></li>
-        <li>Налоговый кодекс РК и формы ФНО 100.00, 200.00, 300.00, 910.00<small>Сверка выручки, ФОТ, НДС с отчётностью</small></li>
+        <li>НСФО для субъектов МСБ<small>Форма МСБ и правила её составления</small></li>
+        <li>Налоговый кодекс РК, ФНО 100.00, 200.00, 300.00, 910.00<small>Сверка выручки, ФОТ, НДС с отчётностью</small></li>
       </ul>
     </div>
     <div class="lib-group">
-      <h3>Стандарты МСФО</h3>
+      <div class="lib-head"><span class="s-ico"><svg class="ico"><use href="#i-globe"/></svg></span><h3>Стандарты МСФО</h3></div>
       <ul>
         <li><a href="https://www.ifrs.org" target="_blank" rel="noopener">IFRS Foundation</a><small>Тексты стандартов, есть русские переводы</small></li>
         <li>IAS 1 «Представление финансовой отчётности»<small>Баланс и ОПиУ</small></li>
         <li>IAS 7 «Отчёт о движении денежных средств»<small>Прямой и косвенный метод</small></li>
-        <li>IFRS 10 «Консолидированная финансовая отчётность»<small>Правила консолидации группы</small></li>
+        <li>IFRS 10 «Консолидированная финансовая отчётность»<small>Консолидация группы</small></li>
       </ul>
     </div>
     <div class="lib-group">
-      <h3>Книги</h3>
+      <div class="lib-head"><span class="s-ico"><svg class="ico"><use href="#i-book"/></svg></span><h3>Книги</h3></div>
       <ul>
         <li>Ковалёв В.В., Ковалёв Вит.В. «Анализ баланса, или Как понимать баланс»<small>Модули 3, 6</small></li>
-        <li>Шеремет А.Д., Негашев Е.В. «Методика финансового анализа деятельности коммерческих организаций»<small>Модули 3–6, коэффициенты</small></li>
-        <li>Шилит Г. «Финансовые махинации»<small>Модуль 6, признаки манипуляций</small></li>
+        <li>Шеремет А.Д., Негашев Е.В. «Методика финансового анализа деятельности коммерческих организаций»<small>Модули 3–6</small></li>
+        <li>Шилит Г. «Финансовые махинации»<small>Модуль 6</small></li>
         <li>Беннинга С. «Финансовое моделирование с использованием Excel»<small>Модуль 8</small></li>
-        <li>Дамодаран А. «Инвестиционная оценка»<small>Модуль 8, NPV и IRR</small></li>
-        <li>Нафлик К. «Сторителлинг с данными»<small>Модуль 9, графики</small></li>
-        <li>Минто Б. «Принцип пирамиды Минто»<small>Модуль 9, структура заключения</small></li>
+        <li>Дамодаран А. «Инвестиционная оценка»<small>Модуль 8</small></li>
+        <li>Нафлик К. «Сторителлинг с данными»<small>Модуль 9</small></li>
+        <li>Минто Б. «Принцип пирамиды Минто»<small>Модуль 9</small></li>
       </ul>
     </div>
     <div class="lib-group">
-      <h3>Данные для практики</h3>
+      <div class="lib-head"><span class="s-ico"><svg class="ico"><use href="#i-data"/></svg></span><h3>Данные для практики</h3></div>
       <ul>
         <li><a href="https://dfo.kz" target="_blank" rel="noopener">Депозитарий финансовой отчётности</a><small>Опубликованная отчётность организаций РК</small></li>
         <li><a href="https://kase.kz" target="_blank" rel="noopener">KASE</a><small>Отчётность эмитентов, аудиторские заключения</small></li>
@@ -220,7 +471,7 @@ footer{padding-block:32px 48px;color:var(--muted);font-size:13px;border-top:1px 
       </ul>
     </div>
     <div class="lib-group">
-      <h3>ИИ и инструменты</h3>
+      <div class="lib-head"><span class="s-ico"><svg class="ico"><use href="#i-chip"/></svg></span><h3>ИИ и инструменты</h3></div>
       <ul>
         <li><a href="https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank" rel="noopener">Руководство по промптам Claude</a><small>Модуль 2</small></li>
         <li><a href="https://ollama.com" target="_blank" rel="noopener">Ollama</a> или <a href="https://lmstudio.ai" target="_blank" rel="noopener">LM Studio</a><small>Локальная модель для реальных данных</small></li>
@@ -237,67 +488,67 @@ footer{padding-block:32px 48px;color:var(--muted);font-size:13px;border-top:1px 
 
 <script>
 const BLOCKS=[
- {name:"Фундамент",span:"модули 1–2",ids:[1,2]},
- {name:"Три отчёта",span:"модули 3–5",ids:[3,4,5]},
- {name:"Анализ и прогноз",span:"модули 6–8",ids:[6,7,8]},
- {name:"Результат и автоматизация",span:"модули 9–10",ids:[9,10]}
+ {id:"b1",name:"Фундамент",span:"модули 1–2 · дни 1–2",ids:[1,2]},
+ {id:"b2",name:"Три отчёта",span:"модули 3–5 · дни 3–5",ids:[3,4,5]},
+ {id:"b3",name:"Анализ и прогноз",span:"модули 6–8 · дни 6–10",ids:[6,7,8]},
+ {id:"b4",name:"Результат и автоматизация",span:"модули 9–10 · дни 11–12",ids:[9,10]}
 ];
 const MODS={
- 1:{title:"Данные аналитика в РК",weeks:"1",time:"2 ч",ai:false,
+ 1:{title:"Данные аналитика в РК",day:"1",time:"2 ч",ai:false,
   why:"Анализ начинается с понимания, какие данные доступны и насколько им можно доверять.",
   topics:["Сущность финансового анализа: кто читает анализ и какие решения на нём принимает","Источники: формы по приказу №404 и форма МСБ, ФНО, банковские выписки, кредитный отчёт","Двух- и трёхзначные коды строк, как привести разные формы к одной структуре","Связи между источниками: что с чем должно сходиться","Базовая точка: сколько сейчас занимает полный анализ одного клиента"],
   practice:"Опишите свой процесс анализа по шагам и засеките время. Составьте карту источников: какой документ подтверждает какую цифру.",
   result:"Карта источников и базовое время анализа",
   mats:["Приказ Минфина РК №404","НСФО для МСБ","Формы ФНО на Әділет","Структура кредитного отчёта ПКБ"]},
- 2:{title:"ИИ-помощник: промпты, безопасность, проверка",weeks:"2",time:"5 ч",ai:true,
+ 2:{title:"ИИ-помощник: промпты, безопасность, проверка",day:"2",time:"5 ч",ai:true,
   why:"ИИ подключается до разбора отчётов, чтобы в модулях 3–8 использовать его как наставника и проверяющего.",
   topics:["Как устроены языковые модели и почему ошибаются в арифметике и кодах строк","Структура промпта: роль, цель, контекст, формат, критерии; итерации","Что можно отдавать в облако, а что нет: БИН, названия, суммы, контрагенты","Обезличивание: «Компания А», масштабирование сумм, коды контрагентов","Локальная модель на своём ПК для работы с реальными цифрами","Проверка ответов: галлюцинации, ссылки на источники, сопоставление","Сбор публичной информации о контрагенте: регистрация, госзакупки, суды"],
   practice:"Библиотека из 10 промптов, регламент обезличивания на 1 страницу и рабочая локальная модель. Досье на условного контрагента, все факты со ссылками.",
   result:"Промпты, регламент, локальная модель, досье",
   mats:["Руководство по промптам Claude","Ollama или LM Studio"]},
- 3:{title:"Баланс",weeks:"3",time:"3 ч",ai:false,
+ 3:{title:"Баланс",day:"3",time:"3 ч",ai:false,
   why:"Баланс показывает, чем компания владеет и кому должна; на нём строятся все остальные отчёты и коэффициенты.",
   topics:["Сущность баланса: активы, обязательства, капитал","Структура формы №404 и формы МСБ","Составление баланса с нуля по оборотно-сальдовой ведомости","Вертикальный и горизонтальный анализ","На что смотреть: дебиторка, запасы, займы связанным сторонам, отрицательный капитал"],
   practice:"Соберите баланс компании-образца по ОСВ и сверьте с формой. Разберите балансы двух опубликованных компаний за 3 года: 5 главных наблюдений.",
   result:"Баланс с нуля и разбор двух компаний",
   mats:["Ковалёв «Анализ баланса»","IAS 1","Отчётность с dfo.kz"]},
- 4:{title:"ОПиУ и сверка с налогами",weeks:"4",time:"3 ч",ai:false,
+ 4:{title:"ОПиУ и сверка с налогами",day:"4",time:"3 ч",ai:false,
   why:"Прибыль связывает два баланса через нераспределённую прибыль, а налоговые декларации проверяют её реальность.",
   topics:["Сущность ОПиУ и связь с балансом","Составление ОПиУ с нуля","Маржинальность, EBITDA, нормализация: разовые доходы, курсовые разницы, связанные стороны","Сверка выручки с ФНО 100.00, 300.00, 910.00 и оборотами по выпискам","Сверка ФОТ с ФНО 200.00"],
   practice:"Соберите ОПиУ компании-образца, рассчитайте нормализованную EBITDA и найдите расхождения выручки с декларациями.",
   result:"ОПиУ, EBITDA и таблица сверок",
   mats:["IAS 1","Налоговый кодекс РК, формы ФНО","Шеремет, Негашев, раздел о прибыли"]},
- 5:{title:"Движение денежных средств",weeks:"5",time:"3 ч",ai:false,
+ 5:{title:"Движение денежных средств",day:"5",time:"3 ч",ai:false,
   why:"Банк погашается деньгами, а не прибылью. ДДС объясняет, куда ушла прибыль, и готовит основу для прогноза.",
   topics:["Операционная, инвестиционная и финансовая деятельность","Прямой метод по банковским выпискам","Косвенный метод из баланса и ОПиУ","Прибыль есть, денег нет: разбор причин","Транзит, займы учредителей, признаки обналичивания"],
   practice:"Постройте ДДС компании-образца обоими методами и сверьте результат. Объясните разрыв между прибылью и операционным потоком.",
   result:"ДДС двумя методами",
   mats:["IAS 7","Выписки компании-образца"]},
- 6:{title:"Финансовое состояние и признаки манипуляций",weeks:"6",time:"4 ч",ai:false,
+ 6:{title:"Финансовое состояние и признаки манипуляций",day:"6",time:"4 ч",ai:false,
   why:"Когда три отчёта собраны и сверены, их можно сводить в коэффициенты и оценивать устойчивость компании.",
   topics:["Ликвидность, оборачиваемость, рентабельность, финансовая устойчивость","Долговая нагрузка: долг/EBITDA, DSCR, сверка с кредитным отчётом","Как интерпретировать коэффициенты по отрасли и в динамике","Признаки манипуляций: несовпадения между отчётами, декларациями и выписками","Статусы «недостаточно данных», «требует проверки», «критический риск» вместо нулей"],
   practice:"Рассчитайте коэффициенты компании-образца за 3 года, отметьте статусы и найдите 3 признака возможной манипуляции в опубликованной отчётности.",
   result:"Таблица коэффициентов со статусами",
   mats:["Шеремет, Негашев","Шилит «Финансовые махинации»","Кредитный отчёт ПКБ"]},
- 7:{title:"Группа компаний и автоматизация в Excel",weeks:"7–8",time:"8 ч",ai:true,
-  why:"Ручные расчёты из модулей 3–6 теперь превращаются в инструмент, который работает и для одной компании, и для группы.",
+ 7:{title:"Группа компаний и автоматизация в Excel",day:"7–8",time:"8 ч",ai:true,
+  why:"Ручные расчёты из модулей 3–6 превращаются в инструмент, который работает и для одной компании, и для группы.",
   topics:["Консолидация: исключение внутригрупповых оборотов, займов и дебиторки","Power Query: сбор отчётности 5–7 компаний в одну модель","Формулы с ИИ: ПРОСМОТРX, СУММЕСЛИМН, динамические массивы","15 формул-проверок: баланс ↔ ОПиУ, ОПиУ ↔ ФНО, выручка ↔ выписки, кредиты ↔ кредитный отчёт","Макросы VBA с ИИ: скрытие пустых периодов и компаний, защита формул","Как читать и тестировать код от ИИ"],
   practice:"Консолидируйте группу из 3 компаний через Power Query. Добавьте 15 проверок в Excel-инструмент и автоматизируйте самую долгую ручную операцию.",
   result:"Консолидация, 15 проверок, первая автоматизация",
   mats:["IFRS 10","Документация Power Query","Ваш Excel-инструмент"]},
- 8:{title:"Финмодель, прогноз ДДС и инвестиционные показатели",weeks:"9–10",time:"7 ч",ai:true,
+ 8:{title:"Финмодель, прогноз ДДС и инвестиционные показатели",day:"9–10",time:"7 ч",ai:true,
   why:"Анализ прошлого отвечает, какая компания сейчас; прогноз отвечает, сможет ли она платить по кредиту.",
   topics:["Цели модели: кредит, инвестиции, планирование","Допущения: выручка из контрактной базы, затраты, капвложения, долг","Прогноз ДДС на 12–24 месяца, кассовые разрывы","Базовый и стрессовый сценарии","NPV, IRR, срок окупаемости, DSCR по прогнозу; потребность в финансировании","ИИ для перебора сценариев и поиска ошибок в модели"],
   practice:"Постройте модель компании-образца на 24 месяца с двумя сценариями и рассчитайте потребность в финансировании.",
   result:"Финмодель со стресс-сценарием",
   mats:["Беннинга «Финансовое моделирование с использованием Excel»","Дамодаран «Инвестиционная оценка»"]},
- 9:{title:"Визуализация и аналитическое заключение",weeks:"11",time:"4 ч",ai:true,
+ 9:{title:"Визуализация и аналитическое заключение",day:"11",time:"4 ч",ai:true,
   why:"Расчёт ценен, только когда читатель понял вывод за 10 минут.",
   topics:["График под вопрос: динамика — линия, структура долга — столбцы, мост прибыли — водопад","Дашборд «Сводка клиента» на один экран","Структура заключения: резюме, бизнес, финансовое положение, долг, прогноз, риски, вывод","Три читателя: кредитный аналитик, консультант, собственник — без дублирования расчётов","Связка Excel → Word через автополя","ИИ как второй аналитик: оспорить вывод и найти противоречия"],
   practice:"Дашборд из 6 показателей и 3 графиков. Шаблон заключения в Word с 20+ автополями и выводы по компании-образцу, каждое утверждение сверено с цифрой.",
   result:"Дашборд и шаблон заключения",
   mats:["Нафлик «Сторителлинг с данными»","Минто «Принцип пирамиды Минто»"]},
- 10:{title:"Итоговый проект и локальный конвейер",weeks:"12",time:"5 ч",ai:true,
+ 10:{title:"Итоговый проект и локальный конвейер",day:"12",time:"5 ч",ai:true,
   why:"Проект собирает все модули в один рабочий процесс, а конвейер закрепляет скорость.",
   topics:["Полный анализ компании-образца или группы из 3 компаний за 1 рабочий день","Конвейер на Python: чтение .xlsm → проверки → обезличенные показатели → локальная модель → черновик Word","Жёсткий формат ответа модели и журнал действий","Финальное решение всегда за аналитиком"],
   practice:"Проведите полный анализ и сравните время с базовой точкой из модуля 1. Запустите конвейер и сравните черновик со своим заключением.",
@@ -310,44 +561,47 @@ let done={};
 try{done=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){done={}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}}
 const esc=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
-const chev='<svg class="chev" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-const TOTAL=Object.keys(MODS).length;
+const IDS=Object.keys(MODS);
+const dayLabel=d=>(d.includes("–")?"Дни ":"День ")+d;
 
 function render(){
-  document.getElementById("main").innerHTML=`<section class="part" data-sec="program" id="modules">
-   <div class="part-head"><span class="eyebrow">Модули</span><h2>10 модулей</h2><p>Откройте модуль, чтобы увидеть темы, практику и материалы. Отметка <span class="ai-mark">ИИ</span> — модули, где ИИ входит в основную работу.</p></div>
-   ${BLOCKS.map(b=>`<div class="block"><div class="block-title"><h3>${b.name}</h3><span>${b.span}</span></div>
+  document.getElementById("mlist").innerHTML=BLOCKS.map(b=>`
+   <div class="mblock"><div class="mblock-title" id="${b.id}"><h3>${b.name}</h3><span>${b.span}</span></div>
     ${b.ids.map(i=>{const m=MODS[i];return `
      <details class="mod${done[i]?" done":""}" id="m${i}">
       <summary><span class="num">${i}</span>
-       <span class="sum-text"><h3>${esc(m.title)}${m.ai?'<span class="ai-mark">ИИ</span>':""}</h3><span class="meta">${m.weeks.includes("–")?"Дни":"День"} ${m.weeks} · ${m.time}</span></span>${chev}</summary>
+       <span class="sum-text"><h3>${esc(m.title)}</h3>
+        <span class="meta">${dayLabel(m.day)} · ${m.time}${m.ai?' <span class="ai-mark">ИИ</span>':""} <span class="done-mark">пройден</span></span></span>
+       <span class="round"><svg class="ico"><use href="#i-plus"/></svg></span></summary>
       <div class="body">
        <p class="why">${esc(m.why)}</p>
        <ol>${m.topics.map(x=>`<li>${esc(x)}</li>`).join("")}</ol>
        <div class="cols">
         <div class="box practice"><b>Практика</b><p>${esc(m.practice)}</p></div>
-        <div class="box"><b>Материалы</b><ul>${m.mats.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+        <div class="box mats"><b>Материалы</b><ul>${m.mats.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
        </div>
        <label class="done-toggle"><input type="checkbox" id="chk-${i}" data-id="${i}" ${done[i]?"checked":""}> Модуль пройден</label>
-      </div></details>`}).join("")}</div>`).join("")}
-  </section>`;
+      </div></details>`}).join("")}</div>`).join("");
   document.querySelectorAll("input[data-id]").forEach(cb=>cb.addEventListener("change",e=>{
     const id=e.target.dataset.id; if(e.target.checked)done[id]=1; else delete done[id];
     save(); document.getElementById("m"+id).classList.toggle("done",e.target.checked); updateProgress();
   }));
-  document.getElementById("plan-rows").innerHTML=Object.entries(MODS).map(([i,m])=>
-    `<tr><td>${m.weeks}</td><td>${i}. ${esc(m.title)}</td><td>${esc(m.result)}</td></tr>`).join("");
+  document.getElementById("plan-rows").innerHTML=IDS.map(i=>{const m=MODS[i];
+    return `<tr><td><span class="day">${m.day}</span></td><td>${i}. ${esc(m.title)}</td><td>${m.time}</td><td>${esc(m.result)}</td></tr>`}).join("");
 }
 function updateProgress(){
-  const n=Object.keys(MODS).filter(i=>done[i]).length;
-  document.getElementById("pbar").style.width=(n/TOTAL*100)+"%";
-  document.getElementById("ptext").textContent=`Пройдено ${n} из ${TOTAL} модулей`;
+  const n=IDS.filter(i=>done[i]).length;
+  document.getElementById("ring").style.strokeDashoffset=138.2*(1-n/IDS.length);
+  document.getElementById("ptext").textContent=`Пройдено ${n} из ${IDS.length} модулей`;
+  const next=IDS.find(i=>!done[i]);
+  document.getElementById("pnext").textContent=next?`Следующий: модуль ${next}, ${dayLabel(MODS[next].day).toLowerCase()}`:"Программа пройдена";
+  document.querySelectorAll("[data-open]").forEach(a=>{const t=next||"10";a.dataset.open=t;a.href="#m"+t;
+    a.firstChild.textContent=next?(n?`Продолжить: модуль ${t} `:"Начать день 1 "):"Повторить итоговый проект ";});
 }
-function show(f){
-  document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-pressed",b.dataset.f===f));
-  document.querySelectorAll("section.part").forEach(s=>{s.hidden=s.dataset.sec!==f});
-}
-document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>show(b.dataset.f)));
+document.addEventListener("click",e=>{
+  const a=e.target.closest("[data-open]"); if(!a)return;
+  const d=document.getElementById("m"+a.dataset.open); if(d)d.open=true;
+});
 render(); updateProgress();
 </script>
 
